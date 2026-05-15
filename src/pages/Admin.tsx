@@ -26,7 +26,12 @@ const Admin = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch('/api/admin-users');
+      const token = localStorage.getItem('google_token');
+      const res = await fetch('/api/admin-users', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await res.json();
       if (Array.isArray(data)) setUsers(data);
     } catch (err) {
@@ -46,11 +51,14 @@ const Admin = () => {
     setMessage({ text: '', type: '' });
 
     try {
+      const token = localStorage.getItem('google_token');
       const res = await fetch('/api/admin-users', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
-          adminEmail: user?.email,
           newUserEmail: email,
           newUserName: name,
           newUserRole: role
@@ -83,10 +91,14 @@ const Admin = () => {
       confirmVariant: 'primary',
       onConfirm: async () => {
         try {
+          const token = localStorage.getItem('google_token');
           const res = await fetch('/api/admin-users', {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ adminEmail: user?.email, userId, newRole })
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, newRole })
           });
           if (res.ok) {
             setMessage({ text: 'Peran berhasil diperbarui.', type: 'success' });
@@ -120,10 +132,14 @@ const Admin = () => {
       confirmVariant: 'danger',
       onConfirm: async () => {
         try {
+          const token = localStorage.getItem('google_token');
           const res = await fetch('/api/admin-users', {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ adminEmail: user?.email, userId })
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId })
           });
           if (res.ok) {
             setMessage({ text: 'User berhasil dihapus.', type: 'success' });

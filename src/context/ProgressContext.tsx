@@ -33,7 +33,12 @@ export const ProgressProvider = ({ children }: { children: ReactNode }) => {
     if (!user?.email) return;
     
     try {
-      const response = await fetch(`/api/progress?email=${encodeURIComponent(user.email)}`);
+      const token = localStorage.getItem('google_token');
+      const response = await fetch(`/api/progress`, {
+        headers: { 
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const cloudData = await response.json() as { materi_slug: string }[];
       
       const newProgress: Record<string, boolean> = { ...progress };
@@ -60,11 +65,14 @@ export const ProgressProvider = ({ children }: { children: ReactNode }) => {
     // Sync to cloud if logged in
     if (user?.email) {
       try {
+        const token = localStorage.getItem('google_token');
         await fetch('/api/progress', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({
-            email: user.email,
             slug,
             completed: isCompleted
           })

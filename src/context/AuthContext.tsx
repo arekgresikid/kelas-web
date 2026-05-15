@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(newUser);
         setIsAuthorized(true);
         localStorage.setItem('user', JSON.stringify(newUser));
+        localStorage.setItem('google_token', googleToken);
         
         // Force refresh to ensure all components sync with the new auth state
         window.location.reload();
@@ -94,6 +95,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setIsAuthorized(false);
     localStorage.removeItem('user');
+    localStorage.removeItem('google_token');
     // Force redirect to home and refresh state
     window.location.href = '/';
   };
