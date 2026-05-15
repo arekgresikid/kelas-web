@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Mail, Lock, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Mail, Lock, Zap } from 'lucide-react';
 
 interface LandingProps {
   onLogin: () => void;
