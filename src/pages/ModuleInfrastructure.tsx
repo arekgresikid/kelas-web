@@ -6,7 +6,6 @@ import {
   Globe, 
   Zap, 
   Shield, 
-  Cpu,
   ArrowRight,
   Database,
   Network
@@ -18,7 +17,7 @@ interface VisualModuleProps {
   onBack?: () => void;
 }
 
-const ModuleInfrastructure: React.FC<VisualModuleProps> = ({ onNext, onPrev, onBack }) => {
+const ModuleInfrastructure: React.FC<VisualModuleProps> = ({ onNext, onBack }) => {
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0d0d0d] text-black dark:text-white p-6 md:p-12 pb-32">
       {/* Header Section */}

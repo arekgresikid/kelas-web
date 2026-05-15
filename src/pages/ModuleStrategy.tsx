@@ -10,7 +10,6 @@ import {
   CheckCircle2, 
   ArrowRight,
   MousePointer2,
-  Users,
   Award
 } from 'lucide-react';
 
@@ -20,7 +19,7 @@ interface VisualModuleProps {
   onBack?: () => void;
 }
 
-const ModuleStrategy: React.FC<VisualModuleProps> = ({ onNext, onPrev, onBack }) => {
+const ModuleStrategy: React.FC<VisualModuleProps> = ({ onNext, onBack }) => {
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0d0d0d] text-black dark:text-white p-6 md:p-12 pb-32">
       {/* Header Section */}

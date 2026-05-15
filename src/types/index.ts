@@ -3,6 +3,7 @@ export interface FrontMatter {
   modul: number;
   order: number;
   description?: string;
+  type?: string;
 }
 
 export interface SubMateri {

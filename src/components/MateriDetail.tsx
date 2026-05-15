@@ -8,7 +8,6 @@ import 'highlight.js/styles/github-dark.css';
 
 import { useProgress } from '../context/ProgressContext';
 import CodePlayground from './CodePlayground';
-import Mermaid from './Mermaid';
 
 interface MateriDetailProps {
   materi: Materi;
