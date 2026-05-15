@@ -1,17 +1,22 @@
 @import "tailwindcss";
 
+@theme {
+  --variant-dark: :where(.dark, .dark *);
+}
+
 @layer base {
   :root {
     --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
   }
 
   body {
     @apply bg-white text-black transition-colors duration-300 font-sans;
     font-family: var(--font-primary);
-  }
-  
-  .dark body {
-    @apply bg-black text-white;
   }
 }
 
