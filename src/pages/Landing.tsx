@@ -125,6 +125,10 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
             <div className="flex items-center gap-1.5 text-xs font-medium text-black/40 dark:text-white/40 bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-full">
               <ShieldCheck size={12} /> Persetujuan Email Diperlukan
             </div>
+            <div className="flex gap-4 text-xs font-bold uppercase tracking-tighter opacity-30 hover:opacity-100 transition-opacity">
+              <a href="/privacy" className="hover:underline">Privacy Policy</a>
+              <a href="/terms" className="hover:underline">Terms of Service</a>
+            </div>
           </div>
         </div>
 
