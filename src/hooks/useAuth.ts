@@ -50,6 +50,22 @@ export const useAuth = () => {
       }
     } catch (err) {
       console.error('Auth Error:', err);
+      
+      // AUTO-LOGIN UNTUK TESTING LOKAL
+      if (window.location.hostname === 'localhost') {
+        console.warn('Backend API tidak terdeteksi. Mengaktifkan Mode Dev (Auto-Login).');
+        const devUser = {
+          email: 'dev@localhost',
+          name: 'Developer Mode',
+          picture: 'https://ui-avatars.com/api/?name=Developer+Mode&background=000&color=fff',
+          role: 'admin'
+        };
+        setUser(devUser);
+        setIsAuthorized(true);
+        localStorage.setItem('user', JSON.stringify(devUser));
+        return { success: true };
+      }
+
       return { success: false, error: 'Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.' };
     }
   };

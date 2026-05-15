@@ -19,6 +19,10 @@ const MateriDetail: React.FC<MateriDetailProps> = ({ materi, onNext, onPrev }) =
     const progress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
     setSubProgress(progress[materi.slug] || {});
     
+    // Simpan materi terakhir yang dibaca untuk dashboard
+    localStorage.setItem('last_read_materi', materi.slug);
+    window.dispatchEvent(new Event('storage'));
+    
     window.scrollTo(0, 0);
   }, [materi.slug]);
 

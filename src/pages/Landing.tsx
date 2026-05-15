@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, ShieldCheck, Mail, Lock } from 'lucide-react';
 
 interface LandingProps {
@@ -10,6 +10,7 @@ interface LandingProps {
 
 const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) => {
   const [regEmail, setRegEmail] = useState('');
+  const [showQRIS, setShowQRIS] = useState(false);
 
   const waLink = `https://wa.me/6281330763633?text=Halo%20Admin%2C%20saya%20sudah%20melakukan%20pembayaran%20via%20QRIS%20untuk%20KelasWeb.%20Mohon%20aktifkan%20akses%20untuk%20email%3A%20${encodeURIComponent(regEmail)}`;
 
@@ -28,7 +29,7 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
             KelasWeb <span className="opacity-40">Exclusive</span>
           </h1>
           <p className="text-black/60 dark:text-white/60 leading-relaxed">
-            Platform pembelajaran web development terkurasi untuk pengguna terdaftar.
+            Panduan langkah demi langkah belajar bikin website dari nol sampai online, dirancang khusus agar mudah dipahami pemula.
           </p>
         </div>
 
@@ -73,22 +74,40 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
                   <ShieldCheck className="text-green-500" size={18} /> Alur Pendaftaran Akses:
                 </div>
                 
-                {/* QRIS Display */}
-                <div className="bg-black/5 dark:bg-white/5 p-4 rounded-2xl space-y-4">
-                  <div className="aspect-square bg-white rounded-xl overflow-hidden border-4 border-white shadow-lg">
-                    <img 
-                      src="/qris.png" 
-                      alt="QRIS KelasWeb"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <a 
-                    href="/qris.png" 
-                    download="QRIS-KelasWeb.png"
-                    className="flex items-center justify-center gap-2 w-full text-xs font-bold uppercase tracking-tighter opacity-60 hover:opacity-100 transition-opacity"
+                {/* QRIS Toggle Section */}
+                <div className="space-y-4">
+                  <button 
+                    onClick={() => setShowQRIS(!showQRIS)}
+                    className="w-full py-3 px-4 rounded-xl border border-black dark:border-white text-xs font-bold uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/5 transition-all flex items-center justify-center gap-2"
                   >
-                    Download QRIS
-                  </a>
+                    {showQRIS ? 'Sembunyikan QRIS' : 'Lihat Kode QRIS Pembayaran'}
+                  </button>
+
+                  <AnimatePresence>
+                    {showQRIS && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden bg-black/5 dark:bg-white/5 p-4 rounded-2xl space-y-4"
+                      >
+                        <div className="aspect-square bg-white rounded-xl overflow-hidden border-4 border-white shadow-lg">
+                          <img 
+                            src="/qris.png" 
+                            alt="QRIS KelasWeb"
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        <a 
+                          href="/qris.png" 
+                          download="QRIS-KelasWeb.png"
+                          className="flex items-center justify-center gap-2 w-full text-xs font-bold uppercase tracking-tighter opacity-60 hover:opacity-100 transition-opacity underline"
+                        >
+                          Download QRIS
+                        </a>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <div className="space-y-3">

@@ -1,13 +1,10 @@
 @import "tailwindcss";
 
-@theme {
-  --variant-dark: :where(.dark, .dark *);
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {
     --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
-    color-scheme: light;
   }
 
   .dark {

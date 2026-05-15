@@ -51,17 +51,29 @@ export const useMaterials = () => {
 
     // Group by modul
     const modulTitles: Record<number, string> = {
-      1: 'DASAR INTERNET & WEBSITE',
-      2: 'DOMAIN DAN DNS',
-      3: 'ALAT DAN PLATFORM',
-      4: 'DASAR FRONTEND',
-      5: 'TECH STACK & JENIS WEB',
-      6: 'PROSES RILIS WEBSITE',
-      7: 'LANJUTAN (BONUS)',
-      8: 'DASAR BACKEND & DATABASE',
-      9: 'VIBE CODING DENGAN AI',
-      10: 'OPTIMASI, SEO & KEAMANAN',
-      11: 'MONETISASI & FREELANCING',
+      // PHASE 1: FOUNDATIONS
+      1: 'FONDASI: DASAR INTERNET',
+      2: 'FONDASI: DOMAIN & DNS',
+      3: 'FONDASI: ALAT & WORKSPACE',
+      
+      // PHASE 2: FRONTEND DEVELOPMENT
+      4: 'FRONTEND: HTML, CSS & JS',
+      5: 'FRONTEND: MODERN TECH STACK',
+      
+      // PHASE 3: BACKEND & DATA
+      8: 'BACKEND: DATABASE & LOGIKA',
+      
+      // PHASE 4: MODERN DEV (AI)
+      9: 'MODERN: VIBE CODING DENGAN AI',
+      
+      // PHASE 5: DEPLOYMENT & PRODUCTION
+      6: 'RILIS: PROSES DEPLOY WEBSITE',
+      12: 'RILIS: DARI KODING KE ONLINE',
+      10: 'RILIS: SEO & KEAMANAN',
+      
+      // PHASE 6: CAREER & BONUS
+      11: 'KARIR: MONETISASI & FREELANCE',
+      7: 'BONUS: MATERI LANJUTAN',
     };
 
     const grouped: Record<number, Materi[]> = {};

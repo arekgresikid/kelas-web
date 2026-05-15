@@ -14,9 +14,11 @@ const DarkModeToggle: React.FC = () => {
     const root = window.document.documentElement;
     if (isDark) {
       root.classList.add('dark');
+      root.style.colorScheme = 'dark';
       localStorage.setItem('theme', 'dark');
     } else {
       root.classList.remove('dark');
+      root.style.colorScheme = 'light';
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);

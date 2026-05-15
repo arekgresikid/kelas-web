@@ -1,104 +1,228 @@
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, useParams, useNavigate, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useParams, useNavigate, Navigate, NavLink } from 'react-router-dom';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import MateriDetail from './components/MateriDetail';
 import Landing from './pages/Landing';
 import Admin from './pages/Admin';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+import { 
+  BookOpen, 
+  Globe, 
+  Wrench, 
+  Layout, 
+  Layers, 
+  Package, 
+  Gift, 
+  Database, 
+  Bot, 
+  ShieldCheck, 
+  Banknote, 
+  Rocket,
+  Sparkles,
+  RotateCcw
+} from 'lucide-react';
 import { useMaterials } from './hooks/useMaterials';
 import { useAuth } from './hooks/useAuth';
-import { ArrowRight, Zap, Globe, Cpu, BookOpen } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Home = () => {
-  const { moduls } = useMaterials();
-  const navigate = useNavigate();
+  const { moduls, allMateri } = useMaterials();
+  const { user } = useAuth();
+  const [progress, setProgress] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    const syncProgress = () => {
+      setProgress(JSON.parse(localStorage.getItem('materi_progress') || '{}'));
+    };
+    syncProgress();
+    window.addEventListener('storage', syncProgress);
+    return () => window.removeEventListener('storage', syncProgress);
+  }, []);
+
+  const completedCount = Object.values(progress).filter(Boolean).length;
+  const totalCount = allMateri.length;
+  const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+  // Find last read or first unread
+  const lastReadSlug = localStorage.getItem('last_read_materi');
+  const continueMateri = allMateri.find(m => m.slug === lastReadSlug) || allMateri.find(m => !progress[m.slug]);
 
   return (
-    <div className="max-w-5xl mx-auto py-12 px-4">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-20"
-      >
-        <span className="inline-block px-4 py-1.5 rounded-full border border-black dark:border-white text-black dark:text-white text-sm font-bold mb-6">
-          Vibe Coding 2026
-        </span>
-        <h1 className="text-5xl md:text-7xl font-extrabold text-black dark:text-white mb-8 tracking-tighter">
-          Bangun Website Dari <span className="underline decoration-black/20 dark:decoration-white/20">Nol</span>
-        </h1>
-        <p className="text-xl text-black/60 dark:text-white/60 max-w-2xl mx-auto leading-relaxed">
-          Tutorial modular bahasa Indonesia untuk menguasai pengembangan web modern dengan bantuan AI. Terstruktur, praktis, dan siap rilis.
-        </p>
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <button 
-            onClick={() => navigate(`/materi/${moduls[0]?.materi[0]?.slug}`)}
-            className="btn btn-primary px-8 py-4 text-lg flex items-center gap-2"
-          >
-            Mulai Belajar <ArrowRight size={20} />
-          </button>
-          <a href="#kurikulum" className="btn bg-white dark:bg-black border border-black dark:border-white text-black dark:text-white px-8 py-4 text-lg hover:bg-black/5 dark:hover:bg-white/5">
-            Lihat Kurikulum
-          </a>
-        </div>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-        {[
-          { icon: <Zap />, title: "Cepat & Praktis", desc: "Fokus pada apa yang benar-benar digunakan di dunia kerja." },
-          { icon: <Cpu />, title: "Bantuan AI", desc: "Optimalkan produktivitas Anda dengan pendekatan Vibe Coding." },
-          { icon: <Globe />, title: "Siap Rilis", desc: "Dari beli domain hingga deploy ke platform cloud modern." },
-        ].map((feat, i) => (
-          <motion.div 
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="card group"
-          >
-            <div className="w-12 h-12 rounded-xl border border-black dark:border-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              {feat.icon}
+    <div className="max-w-6xl mx-auto space-y-16 py-4 md:py-8">
+      {/* Header Section */}
+      <section className="relative overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-black dark:bg-white p-8 md:p-16 text-white dark:text-black">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 dark:bg-black/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+          {user && (
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-[2rem] border-4 border-white/20 dark:border-black/10 overflow-hidden shadow-2xl bg-black/5 dark:bg-white/5">
+              <img 
+                src={user.picture} 
+                alt={user.name} 
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random&size=256`;
+                }}
+              />
             </div>
-            <h3 className="text-xl font-bold mb-2">{feat.title}</h3>
-            <p className="text-black/60 dark:text-white/60">{feat.desc}</p>
-          </motion.div>
-        ))}
-      </div>
+          )}
+          <div className="flex-1 text-center md:text-left space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 dark:bg-black/5 text-[10px] font-bold tracking-[0.2em] uppercase">
+              <Sparkles size={12} />
+              Selamat Belajar
+            </div>
+            <h1 className="text-4xl md:text-6xl font-black leading-tight">
+              Halo, {user?.name.split(' ')[0] || 'Kawan'}! 👋
+            </h1>
+            <p className="text-lg md:text-xl opacity-60 max-w-xl">
+              Siap untuk melanjutkan perjalanan menjadi Web Developer profesional hari ini?
+            </p>
+          </div>
+          <div className="flex flex-col items-center md:items-end gap-6">
+            <div className="text-center md:text-right">
+              <span className="text-5xl md:text-7xl font-black">{progressPercent}%</span>
+              <p className="text-xs font-bold uppercase tracking-widest opacity-40">Progres Belajar</p>
+            </div>
+            {continueMateri && (
+              <NavLink 
+                to={`/materi/${continueMateri.slug}`}
+                className="px-8 py-4 bg-white dark:bg-black text-black dark:text-white rounded-2xl font-bold flex items-center gap-2 hover:scale-105 transition-transform shadow-xl shadow-black/20 dark:shadow-white/20"
+              >
+                {progressPercent === 0 ? 'Mulai Belajar' : 'Lanjutkan Materi'} <ArrowRight size={18} />
+              </NavLink>
+            )}
+          </div>
+        </div>
+      </section>
 
-      <section id="kurikulum" className="space-y-12">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">Kurikulum Pembelajaran</h2>
-          <div className="w-20 h-1 bg-black dark:bg-white mx-auto rounded-full"></div>
+      {/* Progress Bar Detail */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-black/5 dark:bg-white/5 p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors">
+          <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.2em] mb-2">Materi Selesai</p>
+          <p className="text-4xl font-black">{completedCount} <span className="text-lg opacity-20">/ {totalCount}</span></p>
+          <div className="mt-6 h-3 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPercent}%` }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="h-full bg-black dark:bg-white"
+            />
+          </div>
+        </div>
+        <div className="bg-black/5 dark:bg-white/5 p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors">
+          <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.2em] mb-2">Status Akun</p>
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+            <p className="text-3xl font-black uppercase tracking-tighter">{user?.role || 'Siswa'}</p>
+          </div>
+          <p className="mt-3 text-xs opacity-40 font-medium truncate">ID: {user?.email}</p>
+        </div>
+        <div className="bg-black/5 dark:bg-white/5 p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors flex flex-col justify-between">
+          <div>
+            <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.2em] mb-2">Materi Berikutnya</p>
+            <p className="text-xl font-bold leading-tight line-clamp-1">{continueMateri?.frontmatter.title || 'Selesai Semua!'}</p>
+          </div>
+          <div className="flex items-center gap-2 mt-4 text-[10px] font-bold uppercase tracking-widest opacity-40">
+            <Gift size={12} /> Dapatkan Sertifikat
+          </div>
+        </div>
+      </section>
+
+      {/* Curriculum Grid */}
+      <section id="kurikulum" className="space-y-16 pt-8">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight">Kurikulum Belajar</h2>
+          <p className="text-black/60 dark:text-white/60 max-w-xl mx-auto">
+            Jelajahi setiap materi yang telah disusun rapi berdasarkan fase perkembangan skill Anda.
+          </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {moduls.map((modul, i) => (
-            <motion.div 
-              key={modul.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              className="p-6 rounded-2xl bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-colors"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <span className="w-8 h-8 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-sm">
-                  {modul.id}
-                </span>
-                <h4 className="font-bold text-lg">{modul.title}</h4>
+        <div className="space-y-12">
+          {[
+            { title: 'FASE 1: FONDASI', moduls: [1, 2, 3] },
+            { title: 'FASE 2: FRONTEND', moduls: [4, 5] },
+            { title: 'FASE 3: BACKEND', moduls: [8] },
+            { title: 'FASE 4: MODERN DEV (AI)', moduls: [9] },
+            { title: 'FASE 5: DEPLOYMENT & RILIS', moduls: [6, 12, 10] },
+            { title: 'FASE 6: KARIR & BONUS', moduls: [11, 7] },
+          ].map((fase) => {
+            const faseModuls = moduls.filter(m => fase.moduls.includes(m.id));
+            if (faseModuls.length === 0) return null;
+
+            return (
+              <div key={fase.title} className="space-y-8">
+                <div className="flex items-center gap-6">
+                  <h3 className="text-sm font-black tracking-[0.3em] text-black/40 dark:text-white/40 uppercase whitespace-nowrap">
+                    {fase.title}
+                  </h3>
+                  <div className="h-px flex-1 bg-black/10 dark:bg-white/10" />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  {faseModuls.map((modul, i) => {
+                    const getIcon = (id: number) => {
+                      const iconProps = { size: 24, className: "text-black dark:text-white" };
+                      const icons: Record<number, React.ReactNode> = {
+                        1: <BookOpen {...iconProps} />, 
+                        2: <Globe {...iconProps} />, 
+                        3: <Wrench {...iconProps} />, 
+                        4: <Layout {...iconProps} />, 
+                        5: <Layers {...iconProps} />, 
+                        6: <Package {...iconProps} />, 
+                        7: <Gift {...iconProps} />, 
+                        8: <Database {...iconProps} />, 
+                        9: <Bot {...iconProps} />, 
+                        10: <ShieldCheck {...iconProps} />, 
+                        11: <Banknote {...iconProps} />, 
+                        12: <Rocket {...iconProps} />
+                      };
+                      return icons[id] || <BookOpen {...iconProps} />;
+                    };
+
+                    return (
+                      <motion.div 
+                        key={modul.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.05 }}
+                        className="p-8 rounded-[2rem] bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-all group shadow-sm hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5"
+                      >
+                        <div className="flex items-center gap-5 mb-6">
+                          <div className="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            {getIcon(modul.id)}
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">Modul {modul.id}</span>
+                            <h4 className="font-bold text-xl leading-tight">{modul.title.split(': ').pop()}</h4>
+                          </div>
+                        </div>
+                        <ul className="space-y-3 ml-1">
+                          {modul.materi.map(m => (
+                            <li key={m.slug} className="text-sm text-black/60 dark:text-white/60 flex items-center gap-3">
+                              <div className={cn(
+                                "w-2 h-2 rounded-full",
+                                progress[m.slug] ? "bg-green-500" : "bg-black/10 dark:bg-white/10"
+                              )} />
+                              {m.frontmatter.title}
+                            </li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </div>
-              <ul className="space-y-2 ml-12">
-                {modul.materi.map(m => (
-                  <li key={m.slug} className="text-sm text-black/60 dark:text-white/60 flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-black/40 dark:bg-white/40" />
-                    {m.frontmatter.title}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>
