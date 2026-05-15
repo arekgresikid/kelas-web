@@ -6,7 +6,10 @@ import Sidebar from './components/Sidebar';
 import MateriDetail from './components/MateriDetail';
 import Landing from './pages/Landing';
 import Admin from './pages/Admin';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 import Certificate from './components/Certificate';
+import { useLocation } from 'react-router-dom';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -249,6 +252,9 @@ function AppContent() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user, isAuthorized, login, loading } = useAuth();
   const [authError, setAuthError] = useState('');
+  const location = useLocation();
+
+  const isPublicRoute = ['/privacy', '/terms'].includes(location.pathname);
 
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -266,6 +272,16 @@ function AppContent() {
   });
 
   if (loading) return null;
+
+  // Render Public Routes (Privacy/Terms) first
+  if (isPublicRoute) {
+    return (
+      <Routes>
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+      </Routes>
+    );
+  }
 
   if (!user || !isAuthorized) {
     return (
@@ -317,6 +333,8 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/materi/:slug" element={<MateriWrapper />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             {user?.role === 'admin' && <Route path="/admin" element={<Admin />} />}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
