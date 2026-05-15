@@ -134,27 +134,13 @@ function AppContent() {
 
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      try {
-        const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-        });
-        const googleData = await res.json();
-        
-        if (googleData.email) {
-          const result = await login({ 
-            email: googleData.email, 
-            name: googleData.name, 
-            picture: googleData.picture 
-          });
-          
-          if (!result.success) {
-            setAuthError(result.error || 'Email Anda tidak terdaftar di database D1.');
-          } else {
-            setAuthError('');
-          }
-        }
-      } catch (err) {
-        setAuthError('Terjadi kesalahan saat mengambil data profil Google.');
+      // Langsung kirim access_token ke hook login kita
+      const result = await login(tokenResponse.access_token);
+      
+      if (!result.success) {
+        setAuthError(result.error || 'Email Anda tidak terdaftar di database D1.');
+      } else {
+        setAuthError('');
       }
     },
     onError: () => setAuthError('Login Gagal. Silakan coba lagi.'),

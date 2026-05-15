@@ -22,22 +22,22 @@ export const useAuth = () => {
     setLoading(false);
   }, []);
 
-  const login = async (googleUser: any) => {
+  const login = async (googleToken: string) => {
     try {
-      // Panggil API Bridge Cloudflare Pages (Menembak ke D1 Database)
+      // KIRIM TOKEN KE BACKEND (Bukan email mentah)
       const response = await fetch('/api/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: googleUser.email })
+        body: JSON.stringify({ token: googleToken })
       });
 
       const data = await response.json();
 
       if (data.authorized) {
         const newUser = {
-          email: googleUser.email,
-          name: googleUser.name,
-          picture: googleUser.picture,
+          email: data.user.email,
+          name: data.user.name,
+          picture: data.user.picture,
           role: data.user.role
         };
         
@@ -50,7 +50,7 @@ export const useAuth = () => {
       }
     } catch (err) {
       console.error('Auth Error:', err);
-      return { success: false, error: 'Gagal terhubung ke database D1.' };
+      return { success: false, error: 'Gagal terhubung ke server verifikasi.' };
     }
   };
 

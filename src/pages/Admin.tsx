@@ -47,7 +47,7 @@ const Admin = () => {
       });
 
       const data = await res.json();
-      if (data.success) {
+      if (res.ok) {
         setMessage({ text: 'User berhasil ditambahkan!', type: 'success' });
         setEmail('');
         setName('');
@@ -59,6 +59,30 @@ const Admin = () => {
       setMessage({ text: 'Kesalahan jaringan.', type: 'error' });
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDeleteUser = async (userId: number, email: string) => {
+    if (email === user?.email) {
+      alert("Anda tidak bisa menghapus akun Anda sendiri!");
+      return;
+    }
+    
+    if (!window.confirm(`Hapus akses untuk ${email}?`)) return;
+
+    try {
+      const res = await fetch('/api/admin-users', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminEmail: user?.email, userId })
+      });
+
+      if (res.ok) {
+        setMessage({ text: 'User berhasil dihapus.', type: 'success' });
+        fetchUsers();
+      }
+    } catch (err) {
+      setMessage({ text: 'Gagal menghapus user.', type: 'error' });
     }
   };
 
@@ -139,7 +163,7 @@ const Admin = () => {
         >
           <div className="flex items-center gap-2 mb-6">
             <Users size={20} />
-            <h2 className="font-bold">Daftar User Terdaftar</h2>
+            <h2 className="font-bold">Daftar User ({users.length})</h2>
           </div>
 
           {loading ? (
@@ -171,7 +195,10 @@ const Admin = () => {
                         </span>
                       </td>
                       <td className="py-4 text-right">
-                        <button className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100">
+                        <button 
+                          onClick={() => handleDeleteUser(u.id, u.email)}
+                          className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                        >
                           <Trash2 size={16} />
                         </button>
                       </td>
