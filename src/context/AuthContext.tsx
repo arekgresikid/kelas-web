@@ -70,10 +70,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // AUTO-LOGIN UNTUK TESTING LOKAL (Jika API tidak terjangkau)
       if (window.location.hostname === 'localhost') {
-        const isDevAdmin = googleToken === 'dev-admin-token' || googleToken.includes('admin');
+        const isDevAdmin = googleToken.includes('admin') || googleToken.includes('ayick');
         const devUser = {
-          email: isDevAdmin ? 'admin@localhost' : 'student@localhost',
-          name: isDevAdmin ? 'Admin (Dev Mode)' : 'Student (Dev Mode)',
+          email: isDevAdmin ? 'ayicktigabelas@gmail.com' : 'student@localhost',
+          name: isDevAdmin ? 'Admin (Ayick)' : 'Student (Dev Mode)',
           picture: `https://ui-avatars.com/api/?name=${isDevAdmin ? 'Admin' : 'Student'}&background=random`,
           role: isDevAdmin ? 'admin' : 'student'
         };
