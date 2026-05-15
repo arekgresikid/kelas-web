@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // AUTO-LOGIN UNTUK TESTING LOKAL (Jika API tidak terjangkau)
       if (window.location.hostname === 'localhost') {
         const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '').split(',');
-        const isDevAdmin = adminEmails.some(e => googleToken.includes(e)) || googleToken.includes('admin');
+        const isDevAdmin = adminEmails.some((e: string) => googleToken.includes(e)) || googleToken.includes('admin');
         
         const devUser = {
           email: isDevAdmin ? (adminEmails[0] || 'admin@localhost') : 'student@localhost',

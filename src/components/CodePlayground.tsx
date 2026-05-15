@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Play, RotateCcw, Copy, Check } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { RotateCcw, Copy, Check } from 'lucide-react';
 
 interface CodePlaygroundProps {
   initialHtml?: string;
   initialCss?: string;
 }
 
-const CodePlayground: React.FC<CodePlaygroundProps> = ({ 
+const CodePlayground = ({ 
   initialHtml = '<div class="card">\n  <h1>Hello World</h1>\n  <p>Coba edit teks ini!</p>\n</div>',
   initialCss = '.card {\n  padding: 20px;\n  border: 2px solid black;\n  border-radius: 12px;\n  background: #f0f0f0;\n  text-align: center;\n}\nh1 {\n  color: #333;\n}'
-}) => {
+}: CodePlaygroundProps) => {
   const [html, setHtml] = useState(initialHtml);
   const [css, setCss] = useState(initialCss);
   const [srcDoc, setSrcDoc] = useState('');

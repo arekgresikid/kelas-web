@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
 interface ProgressContextType {
   progress: Record<string, boolean>;
-  toggleProgress: (slug: string) => Promise<void>;
+  toggleProgress: (slug: string, explicitCompleted?: boolean) => Promise<void>;
   loading: boolean;
   syncProgress: () => Promise<void>;
 }

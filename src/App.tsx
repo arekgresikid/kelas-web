@@ -1,5 +1,5 @@
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, useParams, useNavigate, Navigate, NavLink } from 'react-router-dom';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';

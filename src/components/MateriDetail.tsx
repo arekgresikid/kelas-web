@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
@@ -14,7 +14,7 @@ interface MateriDetailProps {
   onNext?: () => void;
   onPrev?: () => void;
 }
-const MateriDetail: React.FC<MateriDetailProps> = ({ materi, onNext, onPrev }) => {
+const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
   const [subProgress, setSubProgress] = useState<Record<string, boolean>>({});
   const { toggleProgress } = useProgress();
 
