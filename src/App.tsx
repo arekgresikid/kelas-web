@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 import MateriDetail from './components/MateriDetail';
 import Landing from './pages/Landing';
 import Admin from './pages/Admin';
+import Certificate from './components/Certificate';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -30,22 +31,14 @@ import {
 } from 'lucide-react';
 import { useMaterials } from './hooks/useMaterials';
 import { useAuth } from './hooks/useAuth';
+import { useProgress } from './context/ProgressContext';
 import { ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Home = () => {
   const { moduls, allMateri } = useMaterials();
   const { user } = useAuth();
-  const [progress, setProgress] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    const syncProgress = () => {
-      setProgress(JSON.parse(localStorage.getItem('materi_progress') || '{}'));
-    };
-    syncProgress();
-    window.addEventListener('storage', syncProgress);
-    return () => window.removeEventListener('storage', syncProgress);
-  }, []);
+  const { progress } = useProgress();
 
   const completedCount = Object.values(progress).filter(Boolean).length;
   const totalCount = allMateri.length;
@@ -224,6 +217,8 @@ const Home = () => {
           })}
         </div>
       </section>
+
+      {progressPercent === 100 && <Certificate />}
     </div>
   );
 };

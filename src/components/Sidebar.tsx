@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ChevronRight, CheckCircle2, X, ChevronDown, Home } from 'lucide-react';
 import { useMaterials } from '../hooks/useMaterials';
+import { useProgress } from '../context/ProgressContext';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,8 +19,9 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
   const { moduls } = useMaterials();
+  const { progress } = useProgress();
   const location = useLocation();
-  const [progress, setProgress] = useState<Record<string, boolean>>({});
+  
   const [expandedModul, setExpandedModul] = useState<number | null>(null);
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     return Number(localStorage.getItem('sidebar_width')) || 320;
@@ -55,16 +57,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isResizing, sidebarWidth]);
-
-  useEffect(() => {
-    const syncProgress = () => {
-      setProgress(JSON.parse(localStorage.getItem('materi_progress') || '{}'));
-    };
-
-    syncProgress();
-    window.addEventListener('storage', syncProgress);
-    return () => window.removeEventListener('storage', syncProgress);
-  }, []);
 
   // Auto-expand based on current location
   useEffect(() => {

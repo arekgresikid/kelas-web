@@ -19,3 +19,13 @@ VALUES ('student@example.com', 'Siswa Terdaftar', 'student');
 
 -- Query untuk mengecek email saat login:
 -- SELECT * FROM authorized_users WHERE email = ?;
+
+-- Tabel untuk menyimpan progres belajar user
+CREATE TABLE IF NOT EXISTS user_progress (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_email TEXT NOT NULL,
+    materi_slug TEXT NOT NULL,
+    completed BOOLEAN DEFAULT 1,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_email, materi_slug)
+);

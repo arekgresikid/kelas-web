@@ -6,14 +6,19 @@ import type { Materi } from '../types';
 import { CheckCircle2, ChevronLeft, ChevronRight, List } from 'lucide-react';
 import 'highlight.js/styles/github-dark.css';
 
+import { useProgress } from '../context/ProgressContext';
+import CodePlayground from './CodePlayground';
+
 interface MateriDetailProps {
   materi: Materi;
   onNext?: () => void;
   onPrev?: () => void;
 }
-
 const MateriDetail: React.FC<MateriDetailProps> = ({ materi, onNext, onPrev }) => {
   const [subProgress, setSubProgress] = useState<Record<string, boolean>>({});
+  const { toggleProgress } = useProgress();
+
+  const isFrontendModul = materi.frontmatter.modul === 4 || materi.frontmatter.modul === 5;
 
   useEffect(() => {
     const progress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
@@ -26,7 +31,7 @@ const MateriDetail: React.FC<MateriDetailProps> = ({ materi, onNext, onPrev }) =
     window.scrollTo(0, 0);
   }, [materi.slug]);
 
-  const toggleSubRead = (subId: string) => {
+  const toggleSubRead = async (subId: string) => {
     const allProgress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
     const currentMateriProgress = { ...subProgress, [subId]: !subProgress[subId] };
     
@@ -36,9 +41,9 @@ const MateriDetail: React.FC<MateriDetailProps> = ({ materi, onNext, onPrev }) =
 
     // Also update the main materi progress if all sub-materi are read
     const isAllRead = materi.subMateri.every(s => currentMateriProgress[s.id]);
-    const materiProgress = JSON.parse(localStorage.getItem('materi_progress') || '{}');
-    materiProgress[materi.slug] = isAllRead;
-    localStorage.setItem('materi_progress', JSON.stringify(materiProgress));
+    
+    // Sync with global context (and cloud)
+    await toggleProgress(materi.slug, isAllRead);
     
     window.dispatchEvent(new Event('storage'));
   };
@@ -73,6 +78,8 @@ const MateriDetail: React.FC<MateriDetailProps> = ({ materi, onNext, onPrev }) =
             {materi.content}
           </ReactMarkdown>
         </div>
+
+        {isFrontendModul && <CodePlayground />}
 
         <div className="mt-16 pt-8 border-t border-black dark:border-white flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
