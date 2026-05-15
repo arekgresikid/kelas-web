@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { BookOpen, Mail, Lock, Zap } from 'lucide-react';
 
 interface LandingProps {
@@ -40,8 +41,9 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
             </div>
           </div>
           <div className="flex gap-4 text-[9px] font-black uppercase tracking-widest opacity-30">
-            <a href="/privacy" className="hover:opacity-100 transition-opacity">Privacy</a>
-            <a href="/terms" className="hover:opacity-100 transition-opacity">Terms</a>
+            <Link to="/about" className="hover:opacity-100 transition-opacity">About</Link>
+            <Link to="/privacy" className="hover:opacity-100 transition-opacity">Privacy</Link>
+            <Link to="/terms" className="hover:opacity-100 transition-opacity">Terms</Link>
           </div>
         </div>
 
@@ -61,12 +63,24 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
             {renderCustomLogin ? (
               renderCustomLogin
             ) : (
-              <button 
-                onClick={onLogin}
-                className="w-full bg-black dark:bg-white text-white dark:text-black py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/10 dark:shadow-white/5"
-              >
-                <Mail size={18} /> Login with Google
-              </button>
+              <div className="space-y-3">
+                <button 
+                  onClick={onLogin}
+                  className="w-full bg-black dark:bg-white text-white dark:text-black py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/10 dark:shadow-white/5"
+                >
+                  <Mail size={18} /> Login with Google
+                </button>
+                <button 
+                  onClick={() => {
+                    const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+                    const redirectUri = `${window.location.origin}/auth/github/callback`;
+                    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user:email&redirect_uri=${redirectUri}`;
+                  }}
+                  className="w-full bg-[#24292e] text-white py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/10 dark:shadow-white/5"
+                >
+                  <BookOpen size={18} /> Login with GitHub
+                </button>
+              </div>
             )}
             <div className="flex items-center justify-center gap-2 text-[10px] text-black/40 dark:text-white/40">
               <Lock size={10} />
