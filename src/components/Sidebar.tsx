@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ChevronRight, CheckCircle2, BookOpen, X } from 'lucide-react';
+import { ChevronRight, CheckCircle2, X } from 'lucide-react';
 import { useMaterials } from '../hooks/useMaterials';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
