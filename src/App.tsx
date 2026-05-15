@@ -26,8 +26,7 @@ import {
   ShieldCheck, 
   Banknote, 
   Rocket,
-  Sparkles,
-  RotateCcw
+  Sparkles
 } from 'lucide-react';
 import { useMaterials } from './hooks/useMaterials';
 import { useAuth } from './hooks/useAuth';
