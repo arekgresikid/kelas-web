@@ -8,6 +8,7 @@ import 'highlight.js/styles/github-dark.css';
 
 import { useProgress } from '../context/ProgressContext';
 import CodePlayground from './CodePlayground';
+import Mermaid from './Mermaid';
 
 interface MateriDetailProps {
   materi: Materi;
@@ -96,6 +97,22 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
           <ReactMarkdown 
             remarkPlugins={[remarkGfm]} 
             rehypePlugins={[rehypeHighlight]}
+            components={{
+              code({ node, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || '');
+                const isMermaid = match?.[1] === 'mermaid';
+                
+                if (isMermaid) {
+                  return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+                }
+                
+                return (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              }
+            }}
           >
             {materi.content}
           </ReactMarkdown>
