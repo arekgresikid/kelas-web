@@ -8,6 +8,7 @@ interface LandingProps {
   renderCustomLogin?: React.ReactNode;
 }
 
+const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) => {
   const [regEmail, setRegEmail] = useState('');
 
   const waLink = `https://wa.me/6281330763633?text=Halo%20Admin%2C%20saya%20sudah%20melakukan%20pembayaran%20via%20QRIS%20untuk%20KelasWeb.%20Mohon%20aktifkan%20akses%20untuk%20email%3A%20${encodeURIComponent(regEmail)}`;
@@ -76,7 +77,7 @@ interface LandingProps {
                 <div className="bg-black/5 dark:bg-white/5 p-4 rounded-2xl space-y-4">
                   <div className="aspect-square bg-white rounded-xl overflow-hidden border-4 border-white shadow-lg">
                     <img 
-                      src="/qris.png" // User bisa mengganti file ini di folder public
+                      src="/qris.png" 
                       alt="QRIS KelasWeb"
                       className="w-full h-full object-contain"
                     />
