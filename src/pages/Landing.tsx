@@ -33,7 +33,7 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-black dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
-              <BookOpen size={20} className="text-white dark:text-black" />
+              <img src="/favicon.svg" alt="Logo" className="w-6 h-6 object-contain dark:invert" />
             </div>
             <div>
               <h1 className="text-xl font-black tracking-tight text-black dark:text-white">KelasWeb</h1>
