@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { motion } from 'framer-motion';
 import { UserPlus, Users, Shield, Trash2, Loader2 } from 'lucide-react';
+import Modal from '../components/Modal';
 
 const Admin = () => {
   const { user } = useAuth();
@@ -12,6 +13,16 @@ const Admin = () => {
   const [role, setRole] = useState('student');
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
+  
+  // Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalConfig, setModalConfig] = useState({
+    title: '',
+    message: '',
+    confirmText: '',
+    confirmVariant: 'primary' as 'primary' | 'danger',
+    onConfirm: () => {}
+  });
 
   const fetchUsers = async () => {
     try {
@@ -64,50 +75,81 @@ const Admin = () => {
 
   const handleUpdateRole = async (userId: number, currentRole: string) => {
     const newRole = currentRole === 'admin' ? 'student' : 'admin';
-    if (!window.confirm(`Ubah peran user menjadi ${newRole}?`)) return;
-
-    try {
-      const res = await fetch('/api/admin-users', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ adminEmail: user?.email, userId, newRole })
-      });
-
-      if (res.ok) {
-        setMessage({ text: 'Peran berhasil diperbarui.', type: 'success' });
-        fetchUsers();
+    
+    setModalConfig({
+      title: 'Ubah Peran Pengguna',
+      message: `Apakah Anda yakin ingin mengubah peran pengguna ini menjadi ${newRole.toUpperCase()}?`,
+      confirmText: 'Ubah Sekarang',
+      confirmVariant: 'primary',
+      onConfirm: async () => {
+        try {
+          const res = await fetch('/api/admin-users', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminEmail: user?.email, userId, newRole })
+          });
+          if (res.ok) {
+            setMessage({ text: 'Peran berhasil diperbarui.', type: 'success' });
+            fetchUsers();
+          }
+        } catch (err) {
+          setMessage({ text: 'Gagal memperbarui peran.', type: 'error' });
+        }
       }
-    } catch (err) {
-      setMessage({ text: 'Gagal memperbarui peran.', type: 'error' });
-    }
+    });
+    setModalOpen(true);
   };
 
   const handleDeleteUser = async (userId: number, email: string) => {
     if (email === user?.email) {
-      alert("Anda tidak bisa menghapus akun Anda sendiri!");
+      setModalConfig({
+        title: 'Aksi Dilarang',
+        message: 'Anda tidak bisa menghapus akun Admin yang sedang Anda gunakan sendiri.',
+        confirmText: 'Mengerti',
+        confirmVariant: 'primary',
+        onConfirm: () => {}
+      });
+      setModalOpen(true);
       return;
     }
     
-    if (!window.confirm(`Hapus akses untuk ${email}?`)) return;
-
-    try {
-      const res = await fetch('/api/admin-users', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ adminEmail: user?.email, userId })
-      });
-
-      if (res.ok) {
-        setMessage({ text: 'User berhasil dihapus.', type: 'success' });
-        fetchUsers();
+    setModalConfig({
+      title: 'Hapus Akses Pengguna',
+      message: `Apakah Anda yakin ingin menghapus akses untuk ${email}? Data yang sudah terhapus tidak dapat dikembalikan.`,
+      confirmText: 'Hapus Permanen',
+      confirmVariant: 'danger',
+      onConfirm: async () => {
+        try {
+          const res = await fetch('/api/admin-users', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminEmail: user?.email, userId })
+          });
+          if (res.ok) {
+            setMessage({ text: 'User berhasil dihapus.', type: 'success' });
+            fetchUsers();
+          }
+        } catch (err) {
+          setMessage({ text: 'Gagal menghapus user.', type: 'error' });
+        }
       }
-    } catch (err) {
-      setMessage({ text: 'Gagal menghapus user.', type: 'error' });
-    }
+    });
+    setModalOpen(true);
   };
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
+      {/* Custom Modal */}
+      <Modal 
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        confirmVariant={modalConfig.confirmVariant}
+        onConfirm={modalConfig.onConfirm}
+      />
+
       <div className="flex items-center gap-3 mb-8">
         <Shield className="w-8 h-8" />
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
