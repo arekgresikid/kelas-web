@@ -57,6 +57,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(newUser);
         setIsAuthorized(true);
         localStorage.setItem('user', JSON.stringify(newUser));
+        
+        // Force refresh to ensure all components sync with the new auth state
+        window.location.reload();
+        
         return { success: true };
       } else {
         return { success: false, error: 'Akses Ditolak. Email Anda belum terdaftar di sistem kami.' };
@@ -75,6 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(devUser);
         setIsAuthorized(true);
         localStorage.setItem('user', JSON.stringify(devUser));
+        window.location.reload();
         return { success: true };
       }
 
@@ -86,6 +91,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setIsAuthorized(false);
     localStorage.removeItem('user');
+    // Force redirect to home and refresh state
+    window.location.href = '/';
   };
 
   return (
