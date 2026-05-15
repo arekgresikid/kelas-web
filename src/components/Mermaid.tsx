@@ -7,7 +7,23 @@ interface MermaidProps {
 
 mermaid.initialize({
   startOnLoad: true,
-  theme: 'dark',
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#000000',
+    primaryTextColor: '#ffffff',
+    primaryBorderColor: '#ffffff',
+    lineColor: '#ffffff',
+    secondaryColor: '#ffffff',
+    tertiaryColor: '#ffffff',
+    mainBkg: '#000000',
+    nodeBorder: '#ffffff',
+    clusterBkg: '#000000',
+    clusterBorder: '#ffffff',
+    defaultLinkColor: '#ffffff',
+    titleColor: '#ffffff',
+    edgeLabelBackground: '#000000',
+    nodeTextColor: '#ffffff',
+  },
   securityLevel: 'loose',
   fontFamily: 'inherit',
 });

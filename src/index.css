@@ -90,3 +90,22 @@
 .prose blockquote {
   @apply border-l-4 border-black dark:border-white pl-4 py-1 my-6 italic text-black/60 dark:text-white/60 bg-black/5 dark:bg-white/5 rounded-r;
 }
+
+/* Mermaid Contrast Fix */
+.mermaid svg text {
+  fill: white !important;
+}
+.mermaid svg .edgeLabel text {
+  fill: white !important;
+}
+.mermaid svg .node rect, .mermaid svg .node circle, .mermaid svg .node polygon, .mermaid svg .node path {
+  fill: #000000 !important;
+  stroke: #ffffff !important;
+  stroke-width: 1px !important;
+}
+.mermaid svg .messageText {
+  fill: white !important;
+}
+.mermaid svg .label text {
+  fill: white !important;
+}
