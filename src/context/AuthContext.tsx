@@ -68,13 +68,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (err) {
       console.error('Auth Error:', err);
       
-      // AUTO-LOGIN UNTUK TESTING LOKAL
+      // AUTO-LOGIN UNTUK TESTING LOKAL (Jika API tidak terjangkau)
       if (window.location.hostname === 'localhost') {
+        const isDevAdmin = googleToken === 'dev-admin-token' || googleToken.includes('admin');
         const devUser = {
-          email: 'dev@localhost',
-          name: 'Developer Mode',
-          picture: 'https://ui-avatars.com/api/?name=Developer+Mode&background=000&color=fff',
-          role: 'admin'
+          email: isDevAdmin ? 'admin@localhost' : 'student@localhost',
+          name: isDevAdmin ? 'Admin (Dev Mode)' : 'Student (Dev Mode)',
+          picture: `https://ui-avatars.com/api/?name=${isDevAdmin ? 'Admin' : 'Student'}&background=random`,
+          role: isDevAdmin ? 'admin' : 'student'
         };
         setUser(devUser);
         setIsAuthorized(true);
