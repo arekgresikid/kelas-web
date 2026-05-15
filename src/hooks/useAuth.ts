@@ -46,11 +46,11 @@ export const useAuth = () => {
         localStorage.setItem('user', JSON.stringify(newUser));
         return { success: true };
       } else {
-        return { success: false, error: data.error };
+        return { success: false, error: 'Akses Ditolak. Email Anda belum terdaftar di sistem kami.' };
       }
     } catch (err) {
       console.error('Auth Error:', err);
-      return { success: false, error: 'Gagal terhubung ke server verifikasi.' };
+      return { success: false, error: 'Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.' };
     }
   };
 
