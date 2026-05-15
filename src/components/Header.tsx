@@ -28,8 +28,8 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   return (
     <>
       <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-black dark:border-white">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <button 
               onClick={onMenuClick}
               className="lg:hidden p-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-lg transition-colors"
@@ -37,24 +37,26 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
               <Menu size={24} className="text-black dark:text-white" />
             </button>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center shrink-0">
                 <BookOpen size={20} className="text-white dark:text-black" />
               </div>
-              <span className="text-xl font-bold tracking-tight text-black dark:text-white">Kelas<span className="text-black dark:text-white opacity-60">Web</span></span>
+              <span className="text-xl font-bold tracking-tight text-black dark:text-white hidden xs:block">
+                Kelas<span className="opacity-60 hidden sm:inline">Web</span>
+              </span>
             </div>
           </div>
 
-          <div className="flex-1 max-w-md">
+          <div className="flex-1 max-w-md hidden md:block">
             <SearchBar />
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             {user?.role === 'admin' && (
               <Link 
                 to="/admin" 
-                className="hidden sm:flex px-3 py-1 text-[10px] font-black uppercase tracking-widest border border-black dark:border-white rounded-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+                className="hidden lg:flex px-3 py-1 text-[10px] font-black uppercase tracking-widest border border-black dark:border-white rounded-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
               >
-                Admin Panel
+                Admin
               </Link>
             )}
             
@@ -65,12 +67,12 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
               className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all"
               title="Reset Progres"
             >
-              <RotateCcw size={20} />
+              <RotateCcw size={18} />
             </button>
             
             {user && (
-              <div className="flex items-center gap-3 pl-2 border-l border-black/10 dark:border-white/10">
-                <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-black/10 dark:border-white/10">
+              <div className="flex items-center gap-2 sm:gap-3 pl-2 border-l border-black/10 dark:border-white/10">
+                <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-black/10 dark:border-white/10 shrink-0">
                   <img 
                     src={user.picture} 
                     alt={user.name} 
@@ -82,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                 </div>
                 <button 
                   onClick={logout}
-                  className="hidden sm:flex text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
+                  className="hidden lg:flex text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
                 >
                   Logout
                 </button>

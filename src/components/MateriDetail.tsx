@@ -50,8 +50,30 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
 
   const isAllRead = materi.subMateri.length > 0 && materi.subMateri.every(s => subProgress[s.id]);
 
+  // Reading progress calculation
+  const [scrollProgress, setScrollProgress] = useState(0);
+  useEffect(() => {
+    const updateScroll = () => {
+      const currentScroll = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollHeight) {
+        setScrollProgress((currentScroll / scrollHeight) * 100);
+      }
+    };
+    window.addEventListener('scroll', updateScroll);
+    return () => window.removeEventListener('scroll', updateScroll);
+  }, []);
+
   return (
-    <div className="flex flex-col lg:flex-row gap-10">
+    <div className="flex flex-col lg:flex-row gap-10 relative">
+      {/* Sticky Reading Progress (Desktop Side, Mobile Top) */}
+      <div className="fixed top-0 left-0 w-full h-1 z-[100] bg-black/5 dark:bg-white/5 pointer-events-none">
+        <div 
+          className="h-full bg-black dark:bg-white transition-all duration-150" 
+          style={{ width: `${scrollProgress}%` }} 
+        />
+      </div>
+
       <div className="flex-1 min-w-0 overflow-hidden">
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 text-sm text-black/50 dark:text-white/50 mb-6 overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide">
@@ -81,7 +103,38 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
 
         {isFrontendModul && <CodePlayground />}
 
-        <div className="mt-16 pt-8 border-t border-black dark:border-white flex flex-col sm:flex-row items-center justify-between gap-6">
+        {/* Knowledge Check Section */}
+        <div className="mt-20 p-8 rounded-3xl bg-black/5 dark:bg-white/5 border border-black dark:border-white space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-black dark:bg-white rounded-lg">
+              <CheckCircle2 size={20} className="text-white dark:text-black" />
+            </div>
+            <h3 className="text-xl font-bold">Knowledge Check</h3>
+          </div>
+          <p className="text-black/60 dark:text-white/60 text-sm italic">
+            "Jangan hanya membaca. Cobalah untuk mempraktekkan apa yang baru saja Anda pelajari di terminal atau editor Anda sendiri."
+          </p>
+          <ul className="space-y-4">
+             {materi.subMateri.map((sub) => (
+               <li key={sub.id} className="flex items-start gap-3 group">
+                 <button 
+                   onClick={() => toggleSubRead(sub.id)}
+                   className={`mt-1 flex-shrink-0 w-6 h-6 rounded-lg border flex items-center justify-center transition-all ${
+                     subProgress[sub.id] ? 'bg-green-500 border-green-500 text-white' : 'border-black/20 dark:border-white/20 group-hover:border-black'
+                   }`}
+                 >
+                   {subProgress[sub.id] ? <CheckCircle2 size={14} /> : <div className="w-1.5 h-1.5 rounded-full bg-black/20 dark:bg-white/20" />}
+                 </button>
+                 <div>
+                   <p className={`font-bold ${subProgress[sub.id] ? 'opacity-40 line-through' : ''}`}>{sub.title}</p>
+                   <p className="text-xs opacity-50">Klik kotak untuk menandai bagian ini sudah dipahami.</p>
+                 </div>
+               </li>
+             ))}
+          </ul>
+        </div>
+
+        <div className="mt-16 pt-8 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
              {isAllRead ? (
                <div className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black font-bold">

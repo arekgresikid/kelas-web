@@ -189,10 +189,15 @@ const Home = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.05 }}
-                        className="p-8 rounded-[2rem] bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-all group shadow-sm hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5"
+                        className="p-8 rounded-[3rem] bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-all group shadow-sm hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5 relative overflow-hidden"
                       >
-                        <div className="flex items-center gap-5 mb-6">
-                          <div className="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        {/* Background subtle number */}
+                        <span className="absolute -bottom-10 -right-5 text-[150px] font-black opacity-[0.02] dark:opacity-[0.05] pointer-events-none select-none">
+                          {modul.id}
+                        </span>
+
+                        <div className="flex items-center gap-5 mb-8">
+                          <div className="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
                             {getIcon(modul.id)}
                           </div>
                           <div>
@@ -200,17 +205,34 @@ const Home = () => {
                             <h4 className="font-bold text-xl leading-tight">{modul.title.split(': ').pop()}</h4>
                           </div>
                         </div>
-                        <ul className="space-y-3 ml-1">
-                          {modul.materi.map(m => (
-                            <li key={m.slug} className="text-sm text-black/60 dark:text-white/60 flex items-center gap-3">
-                              <div className={cn(
-                                "w-2 h-2 rounded-full",
-                                progress[m.slug] ? "bg-green-500" : "bg-black/10 dark:bg-white/10"
-                              )} />
-                              {m.frontmatter.title}
-                            </li>
-                          ))}
-                        </ul>
+
+                        <div className="space-y-6">
+                          <ul className="space-y-3 ml-1 relative z-10">
+                            {modul.materi.map(m => (
+                              <li key={m.slug} className="text-sm text-black/60 dark:text-white/60 flex items-center gap-3">
+                                <div className={cn(
+                                  "w-2 h-2 rounded-full transition-all",
+                                  progress[m.slug] ? "bg-green-500 scale-125 shadow-[0_0_10px_rgba(34,197,94,0.5)]" : "bg-black/10 dark:bg-white/10"
+                                )} />
+                                <span className={progress[m.slug] ? "text-black dark:text-white font-medium" : ""}>{m.frontmatter.title}</span>
+                              </li>
+                            ))}
+                          </ul>
+
+                          {/* Per-Module Progress */}
+                          <div className="pt-6 border-t border-black/5 dark:border-white/5">
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Penyelesaian</span>
+                              <span className="text-[10px] font-bold">{Math.round((modul.materi.filter(m => progress[m.slug]).length / modul.materi.length) * 100)}%</span>
+                            </div>
+                            <div className="h-1.5 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
+                              <div 
+                                className="h-full bg-black dark:bg-white transition-all duration-1000"
+                                style={{ width: `${(modul.materi.filter(m => progress[m.slug]).length / modul.materi.length) * 100}%` }}
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </motion.div>
                     );
                   })}

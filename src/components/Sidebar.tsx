@@ -143,12 +143,24 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-[10px] font-bold">
-                    {modul.id}
-                  </span>
-                  <span className="text-xs font-bold uppercase tracking-tight text-left leading-tight pr-2">
-                    {modul.title}
-                  </span>
+                  <div className="relative">
+                    <span className="w-6 h-6 rounded-lg bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-[10px] font-bold z-10 relative">
+                      {modul.id}
+                    </span>
+                    {/* Tiny Progress Ring or Dot */}
+                    <div className={cn(
+                      "absolute -inset-1 rounded-xl border-2 border-transparent transition-all",
+                      modul.materi.every(m => progress[m.slug]) ? "border-green-500 scale-110" : ""
+                    )} />
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="text-[8px] font-black opacity-30 uppercase tracking-tighter">
+                      {Math.round((modul.materi.filter(m => progress[m.slug]).length / modul.materi.length) * 100)}% Selesai
+                    </span>
+                    <span className="text-xs font-bold uppercase tracking-tight text-left leading-tight pr-2">
+                      {modul.title}
+                    </span>
+                  </div>
                 </div>
                 <ChevronDown 
                   size={14} 
