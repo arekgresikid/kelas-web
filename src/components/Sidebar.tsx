@@ -82,7 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
     <aside 
       style={{ width: isOpen ? '100%' : (window.innerWidth >= 1024 ? `${sidebarWidth}px` : '18rem') }}
       className={cn(
-        "fixed inset-y-0 left-0 z-50 transform lg:sticky lg:top-16 lg:z-30 lg:translate-x-0 transition-[transform,opacity] duration-300 ease-in-out bg-white dark:bg-black border-r border-black dark:border-white lg:h-[calc(100vh-64px)] flex flex-col",
+        "fixed inset-y-0 left-0 z-50 transform lg:sticky lg:top-16 lg:z-30 lg:translate-x-0 transition-[transform,opacity] duration-300 ease-in-out bg-white dark:bg-[#161616] border-r border-black dark:border-white/10 lg:h-[calc(100vh-64px)] flex flex-col",
         isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}
     >

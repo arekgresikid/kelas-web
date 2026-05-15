@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-black dark:border-white">
+      <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-[#0d0d0d]/90 backdrop-blur-md border-b border-black dark:border-white/10">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <button 

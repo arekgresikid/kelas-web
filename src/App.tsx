@@ -10,6 +10,9 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import GithubCallback from './pages/GithubCallback';
 import About from './pages/About';
+import ModuleStrategy from './pages/ModuleStrategy';
+import ModuleFundamental from './pages/ModuleFundamental';
+import ModuleInfrastructure from './pages/ModuleInfrastructure';
 import Certificate from './components/Certificate';
 import { useLocation } from 'react-router-dom';
 import { clsx, type ClassValue } from 'clsx';
@@ -263,6 +266,18 @@ const MateriWrapper = () => {
   const nextMateri = allMateri[currentIndex + 1];
   const prevMateri = allMateri[currentIndex - 1];
 
+  if (materi.frontmatter.type === 'visual') {
+    const commonProps = {
+      onNext: nextMateri ? () => navigate(`/materi/${nextMateri.slug}`) : undefined,
+      onPrev: prevMateri ? () => navigate(`/materi/${prevMateri.slug}`) : undefined,
+      onBack: () => navigate('/')
+    };
+
+    if (slug === 'strategi-promosi-web') return <ModuleStrategy {...commonProps} />;
+    if (slug === 'web-fundamental-hub') return <ModuleFundamental {...commonProps} />;
+    if (slug === 'modern-infrastructure') return <ModuleInfrastructure {...commonProps} />;
+  }
+
   return (
     <MateriDetail 
       materi={materi} 
@@ -343,7 +358,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-black text-black dark:text-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-[#0d0d0d] text-black dark:text-white">
       <Header onMenuClick={() => setIsSidebarOpen(true)} />
       
       <div className="flex-1 flex flex-col lg:flex-row container mx-auto px-4 sm:px-6">
@@ -378,7 +393,7 @@ function AppContent() {
         </main>
       </div>
 
-      <footer className="py-12 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black">
+      <footer className="py-12 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#0d0d0d]">
         <div className="container mx-auto px-6 text-center">
           <div className="flex items-center justify-center gap-2 font-bold text-xl text-black/40 dark:text-white/40 mb-4">
             <BookOpen className="w-6 h-6" />

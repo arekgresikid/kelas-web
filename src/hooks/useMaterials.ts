@@ -14,7 +14,7 @@ export const useMaterials = () => {
     
     const parsedMateri: Materi[] = Object.entries(rawFiles).map(([path, content]) => {
       // Simple frontmatter parser
-      const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+      const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
       let frontmatter: FrontMatter = { title: 'Untitled', modul: 0, order: 0 };
       let body = content;
 

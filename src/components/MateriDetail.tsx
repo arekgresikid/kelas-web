@@ -99,13 +99,6 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
             rehypePlugins={[rehypeHighlight]}
             components={{
               code({ node, className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || '');
-                const isMermaid = match?.[1] === 'mermaid';
-                
-                if (isMermaid) {
-                  return <Mermaid chart={String(children).replace(/\n$/, '')} />;
-                }
-                
                 return (
                   <code className={className} {...props}>
                     {children}
