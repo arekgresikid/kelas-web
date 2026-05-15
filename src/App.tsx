@@ -10,9 +10,6 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import GithubCallback from './pages/GithubCallback';
 import About from './pages/About';
-import ModuleStrategy from './pages/ModuleStrategy';
-import ModuleFundamental from './pages/ModuleFundamental';
-import ModuleInfrastructure from './pages/ModuleInfrastructure';
 import Certificate from './components/Certificate';
 import { useLocation } from 'react-router-dom';
 import { clsx, type ClassValue } from 'clsx';
@@ -266,23 +263,14 @@ const MateriWrapper = () => {
   const nextMateri = allMateri[currentIndex + 1];
   const prevMateri = allMateri[currentIndex - 1];
 
-  if (materi.frontmatter.type === 'visual') {
-    const commonProps = {
-      onNext: nextMateri ? () => navigate(`/materi/${nextMateri.slug}`) : undefined,
-      onPrev: prevMateri ? () => navigate(`/materi/${prevMateri.slug}`) : undefined,
-      onBack: () => navigate('/')
-    };
-
-    if (slug === 'strategi-promosi-web') return <ModuleStrategy {...commonProps} />;
-    if (slug === 'web-fundamental-hub') return <ModuleFundamental {...commonProps} />;
-    if (slug === 'modern-infrastructure') return <ModuleInfrastructure {...commonProps} />;
-  }
+  const handleNext = nextMateri ? () => navigate(`/materi/${nextMateri.slug}`) : undefined;
+  const handlePrev = prevMateri ? () => navigate(`/materi/${prevMateri.slug}`) : undefined;
 
   return (
     <MateriDetail 
       materi={materi} 
-      onNext={nextMateri ? () => navigate(`/materi/${nextMateri.slug}`) : undefined}
-      onPrev={prevMateri ? () => navigate(`/materi/${prevMateri.slug}`) : undefined}
+      onNext={handleNext}
+      onPrev={handlePrev}
     />
   );
 };
@@ -387,6 +375,7 @@ function AppContent() {
             <Route path="/about" element={<About />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/auth/github/callback" element={<GithubCallback />} />
             {user?.role === 'admin' && <Route path="/admin" element={<Admin />} />}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
