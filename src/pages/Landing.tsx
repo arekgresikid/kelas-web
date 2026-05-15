@@ -47,18 +47,17 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
           </div>
         </div>
 
-        {/* Hero Section Mini */}
-        <div className="text-center space-y-3">
-          <h2 className="text-3xl font-black tracking-tightest leading-tight">
-            Kuasai Web Dev <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Berbasis Proyek.</span>
-          </h2>
-          <p className="text-black/60 dark:text-white/60 text-xs leading-relaxed max-w-xs mx-auto">
-            Bimbingan AI & Kurikulum Modern 2026.
-          </p>
-        </div>
 
         {/* Login Card Compact */}
         <div className="bg-white/80 dark:bg-white/5 backdrop-blur-2xl border border-black/5 dark:border-white/10 rounded-[2.5rem] p-8 space-y-6 shadow-2xl relative overflow-hidden">
+          <div className="text-center space-y-3 mb-8">
+            <h2 className="text-2xl font-black tracking-tightest leading-tight text-black dark:text-white">
+              Kuasai Web Dev <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Berbasis Proyek.</span>
+            </h2>
+            <p className="text-black/60 dark:text-white/60 text-[10px] leading-relaxed font-bold uppercase tracking-widest">
+              Bimbingan AI & Kurikulum 2026
+            </p>
+          </div>
           <div className="space-y-4">
             {renderCustomLogin ? (
               renderCustomLogin
