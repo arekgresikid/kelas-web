@@ -37,7 +37,8 @@ export const useMaterials = () => {
         subMateri.push({ id, title });
       }
 
-      const slug = path.split('/').pop()?.replace('.md', '') || '';
+      const filename = path.split('/').pop()?.replace('.md', '') || '';
+      const slug = filename.replace(/^\d+(\.\d+)?-/, '');
 
       return {
         id: slug,
