@@ -17,14 +17,14 @@ export const useAuth = () => {
     if (savedUser) {
       const parsedUser = JSON.parse(savedUser);
       setUser(parsedUser);
-      setIsAuthorized(true); // Jika ada di localStorage, kita anggap sudah terverifikasi sebelumnya
+      setIsAuthorized(true);
     }
     setLoading(false);
   }, []);
 
   const login = async (googleUser: any) => {
     try {
-      // Panggil API Bridge Cloudflare Pages
+      // Panggil API Bridge Cloudflare Pages (Menembak ke D1 Database)
       const response = await fetch('/api/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
