@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    @apply bg-white text-black transition-colors duration-300 font-sans;
+    font-family: var(--font-primary);
+  }
+  
+  .dark body {
+    @apply bg-black text-white;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-5 py-2.5 rounded-xl font-bold transition-all active:scale-95 border border-black dark:border-white flex items-center justify-center gap-2;
+  }
+  
+  .btn-primary {
+    @apply bg-black text-white dark:bg-white dark:text-black hover:opacity-90 shadow-lg shadow-black/5 dark:shadow-white/5;
+  }
+
+  .btn-outline {
+    @apply bg-transparent text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl p-6 transition-all hover:border-black dark:hover:border-white;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-black/10 dark:bg-white/10 rounded-full hover:bg-black/20 dark:hover:bg-white/20;
+  }
+}
+
+/* Markdown styling */
+.prose {
+  @apply max-w-none;
+}
+
+.prose h2 {
+  @apply text-2xl font-bold mt-10 mb-4 border-b border-black dark:border-white pb-2 scroll-mt-24;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold mt-6 mb-3 scroll-mt-24;
+}
+
+.prose p {
+  @apply my-4 leading-relaxed text-black/80 dark:text-white/80;
+}
+
+.prose ul, .prose ol {
+  @apply my-4 ml-6 list-disc;
+}
+
+.prose li {
+  @apply my-2;
+}
+
+.prose code {
+  @apply bg-black/5 dark:bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-black dark:text-white;
+}
+
+.prose pre {
+  @apply bg-black dark:bg-white/5 text-white dark:text-white p-4 rounded-xl my-6 overflow-x-auto border border-black dark:border-white;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-inherit;
+}
+
+.prose a {
+  @apply text-black dark:text-white underline underline-offset-4 decoration-black/30 dark:decoration-white/30 hover:decoration-black dark:hover:decoration-white transition-all;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-black dark:border-white pl-4 py-1 my-6 italic text-black/60 dark:text-white/60 bg-black/5 dark:bg-white/5 rounded-r;
+}
