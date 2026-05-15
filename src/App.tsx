@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import MateriDetail from './components/MateriDetail';
 import Landing from './pages/Landing';
+import Admin from './pages/Admin';
 import { useMaterials } from './hooks/useMaterials';
 import { useAuth } from './hooks/useAuth';
 import { ArrowRight, Zap, Globe, Cpu, BookOpen } from 'lucide-react';
@@ -131,12 +132,9 @@ function AppContent() {
   const { user, isAuthorized, login, loading } = useAuth();
   const [authError, setAuthError] = useState('');
 
-  if (loading) return null;
-
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        // Ambil info user menggunakan access_token
         const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
@@ -160,8 +158,10 @@ function AppContent() {
       }
     },
     onError: () => setAuthError('Login Gagal. Silakan coba lagi.'),
-    prompt: 'select_account', // Ini yang memaksa munculnya pilihan akun
+    prompt: 'select_account',
   });
+
+  if (loading) return null;
 
   if (!user || !isAuthorized) {
     return (
@@ -213,6 +213,7 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/materi/:slug" element={<MateriWrapper />} />
+            {user?.role === 'admin' && <Route path="/admin" element={<Admin />} />}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

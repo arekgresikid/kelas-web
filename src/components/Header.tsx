@@ -2,6 +2,7 @@ import React from 'react';
 import { BookOpen, Menu } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
 import SearchBar from './SearchBar';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 interface HeaderProps {
@@ -9,7 +10,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-black dark:border-white">
@@ -34,6 +35,14 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         </div>
 
         <div className="flex items-center gap-2">
+          {user?.role === 'admin' && (
+            <Link 
+              to="/admin" 
+              className="hidden sm:flex px-3 py-1 text-xs font-bold uppercase border border-black dark:border-white rounded hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+            >
+              Admin
+            </Link>
+          )}
           <DarkModeToggle />
           <button 
             onClick={logout}
