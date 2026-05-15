@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContext';
 import { Loader2 } from 'lucide-react';
 
 const GithubCallback = () => {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
-  const { isAuthorized } = useAuthContext();
+  // const { isAuthorized } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {

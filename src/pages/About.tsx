@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Sparkles, Shield, Rocket, Heart } from 'lucide-react';
+import { Sparkles, Shield, Rocket, Heart } from 'lucide-react';
 
 const About = () => {
   return (
