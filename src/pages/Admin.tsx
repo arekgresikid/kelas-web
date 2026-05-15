@@ -62,6 +62,26 @@ const Admin = () => {
     }
   };
 
+  const handleUpdateRole = async (userId: number, currentRole: string) => {
+    const newRole = currentRole === 'admin' ? 'student' : 'admin';
+    if (!window.confirm(`Ubah peran user menjadi ${newRole}?`)) return;
+
+    try {
+      const res = await fetch('/api/admin-users', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminEmail: user?.email, userId, newRole })
+      });
+
+      if (res.ok) {
+        setMessage({ text: 'Peran berhasil diperbarui.', type: 'success' });
+        fetchUsers();
+      }
+    } catch (err) {
+      setMessage({ text: 'Gagal memperbarui peran.', type: 'error' });
+    }
+  };
+
   const handleDeleteUser = async (userId: number, email: string) => {
     if (email === user?.email) {
       alert("Anda tidak bisa menghapus akun Anda sendiri!");
@@ -188,11 +208,14 @@ const Admin = () => {
                         <div className="text-xs text-black/40 dark:text-white/40">{u.email}</div>
                       </td>
                       <td className="py-4">
-                        <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${
-                          u.role === 'admin' ? 'bg-black text-white dark:bg-white dark:text-black' : 'bg-black/5 dark:bg-white/5'
-                        }`}>
+                        <button
+                          onClick={() => handleUpdateRole(u.id, u.role)}
+                          className={`px-2 py-1 rounded text-[10px] font-bold uppercase cursor-pointer hover:ring-2 ring-black dark:ring-white transition-all ${
+                            u.role === 'admin' ? 'bg-black text-white dark:bg-white dark:text-black' : 'bg-black/5 dark:bg-white/5'
+                          }`}
+                        >
                           {u.role}
-                        </span>
+                        </button>
                       </td>
                       <td className="py-4 text-right">
                         <button 

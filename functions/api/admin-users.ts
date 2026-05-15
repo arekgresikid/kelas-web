@@ -59,3 +59,27 @@ export const onRequestDelete: PagesFunction<Env> = async (context) => {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });
   }
 };
+
+export const onRequestPatch: PagesFunction<Env> = async (context) => {
+  try {
+    const { adminEmail, userId, newRole } = await context.request.json() as { 
+      adminEmail: string, 
+      userId: number, 
+      newRole: string 
+    };
+
+    const adminCheck = await context.env.DB.prepare(
+      "SELECT role FROM authorized_users WHERE email = ? AND role = 'admin'"
+    ).bind(adminEmail).first();
+
+    if (!adminCheck) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 403 });
+
+    await context.env.DB.prepare("UPDATE authorized_users SET role = ? WHERE id = ?")
+      .bind(newRole, userId)
+      .run();
+
+    return new Response(JSON.stringify({ success: true }));
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+  }
+};
