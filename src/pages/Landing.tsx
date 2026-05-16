@@ -24,8 +24,8 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0d0d0d] flex flex-col items-center p-6 relative overflow-x-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20 dark:opacity-40">
-        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-500 rounded-full blur-[150px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-purple-500 rounded-full blur-[150px] animate-pulse delay-700" />
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-500 rounded-full blur-[100px] animate-pulse will-change-[transform,opacity]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-purple-500 rounded-full blur-[100px] animate-pulse delay-700 will-change-[transform,opacity]" />
       </div>
 
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mt-8 lg:mt-20 relative z-10">
@@ -37,9 +37,9 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
           className="relative lg:order-2"
         >
           {/* Glowing border effect */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[3rem] blur opacity-20 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[3rem] blur-xl opacity-20 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
           
-          <div className="relative bg-white/90 dark:bg-black/90 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-[3rem] p-8 md:p-12 space-y-8 shadow-2xl overflow-hidden">
+          <div className="relative bg-white/90 dark:bg-black/90 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[3rem] p-8 md:p-12 space-y-8 shadow-2xl overflow-hidden">
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="w-16 h-16 bg-black dark:bg-white rounded-2xl flex items-center justify-center shadow-2xl">
                 <img src="/favicon.svg" alt="Logo" className="w-10 h-10 dark:invert" />
@@ -158,7 +158,7 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="space-y-10 text-center lg:text-left lg:order-1"
         >
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 backdrop-blur-md">
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 backdrop-blur-sm">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
             <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Pendaftaran Dibuka - Batch 2026</span>
           </div>
