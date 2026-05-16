@@ -332,7 +332,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
             {/* Header Area */}
             <div className="p-3 md:p-4 bg-black dark:bg-zinc-800 text-white shrink-0">
               <div className="flex items-center justify-between gap-1 md:gap-2">
-                <div className="flex items-center gap-2 md:gap-3 min-w-0 overflow-hidden">
+                <div className="flex items-center gap-2 md:gap-3 min-w-0">
                   <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                     <selectedPersona.icon size={18} className={`md:size-[22px] ${isLoading ? 'animate-pulse' : ''}`} />
                   </div>
