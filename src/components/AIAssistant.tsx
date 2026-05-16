@@ -327,7 +327,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
               y: 0,
             }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className={`absolute bottom-0 right-0 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? 'rounded-2xl w-[72px] h-[72px]' : 'rounded-xl md:rounded-[2rem] w-[calc(100vw-10px)] sm:w-[400px] md:w-[450px] h-[calc(100vh-10px)] md:h-[min(650px,calc(100vh-140px))]'}`}
+            className={`absolute bottom-0 right-0 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? 'rounded-2xl w-[72px] h-[72px]' : 'rounded-xl md:rounded-[2rem] w-[calc(100vw-10px)] sm:w-[400px] md:w-[450px] h-[calc(100svh-10px)] md:h-[min(650px,calc(100svh-140px))]'}`}
           >
             {/* Header Area */}
             <div className="p-3 md:p-4 bg-black dark:bg-zinc-800 text-white shrink-0">
