@@ -241,9 +241,13 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
       >
         <div className="flex items-center gap-4">
           <div className="flex -space-x-3">
-            {[1,2,3,4,5].map(i => (
-              <div key={i} className="w-10 h-10 rounded-full border-4 border-[#fafafa] dark:border-[#0d0d0d] bg-black/10 dark:bg-white/10 overflow-hidden shadow-sm">
-                <img src={`https://ui-avatars.com/api/?name=User+${i}&background=random&size=128`} alt="avatar" />
+            {[10, 20, 30, 40, 50].map((id, i) => (
+              <div key={i} className="w-10 h-10 rounded-full border-4 border-[#fafafa] dark:border-[#0d0d0d] bg-black/5 dark:bg-white/5 overflow-hidden shadow-sm hover:translate-y-[-2px] transition-transform duration-300">
+                <img 
+                  src={`https://i.pravatar.cc/150?u=${id}`} 
+                  alt={`Mahasiswa ${i + 1}`}
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                />
               </div>
             ))}
           </div>
