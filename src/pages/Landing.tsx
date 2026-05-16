@@ -22,10 +22,9 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0d0d0d] flex flex-col items-center p-6 relative overflow-x-hidden">
-      {/* Background Decor - Optimized with gradients instead of heavy blurs */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-30 dark:opacity-50">
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-[radial-gradient(circle,rgba(59,130,246,0.3)_0%,transparent_70%)] animate-pulse will-change-opacity" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-[radial-gradient(circle,rgba(168,85,247,0.3)_0%,transparent_70%)] animate-pulse delay-700 will-change-opacity" />
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20 dark:opacity-40">
+        <div className="absolute top-[-10%] left-[-10%] w-[80%] h-[80%] bg-[radial-gradient(circle,rgba(59,130,246,0.15)_0%,transparent_80%)] animate-pulse will-change-opacity" />
+        <div className="absolute bottom-[10%] right-[-10%] w-[90%] h-[90%] bg-[radial-gradient(circle,rgba(168,85,247,0.15)_0%,transparent_80%)] animate-pulse delay-700 will-change-opacity" />
       </div>
 
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mt-8 lg:mt-20 relative z-10">
@@ -191,44 +190,44 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
-        className="mt-20 flex flex-col items-center gap-10 w-full max-w-5xl px-4"
+        className="mt-24 flex flex-col items-center gap-10 w-full max-w-5xl px-4 relative z-20"
       >
-        <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-30">Powered & Supported By</p>
-        <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-          <div title="Cloudflare">
-            <img src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg" className="h-4 dark:invert" alt="Cloudflare" />
+        <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 text-center">Powered & Supported By</p>
+        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-10 md:gap-16 opacity-50 dark:opacity-40">
+          <div title="Cloudflare" className="flex items-center">
+            <img src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg" className="h-4 dark:invert grayscale" alt="Cloudflare" />
           </div>
           <div title="Google" className="flex items-center gap-2">
-            <img src="/google-icon.svg" className="h-4 dark:brightness-200" alt="Google" />
-            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">Google</span>
+            <img src="/google-icon.svg" className="h-4 grayscale" alt="Google" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black opacity-80">Google</span>
           </div>
           <div title="GitHub" className="flex items-center gap-2">
-            <img src="/github.svg" className="h-5 dark:invert" alt="GitHub" />
-            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">GitHub</span>
+            <img src="/github.svg" className="h-5 dark:invert grayscale" alt="GitHub" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black opacity-80">GitHub</span>
           </div>
           <div title="Antigravity" className="flex items-center gap-2">
-            <img src="/antigravity-color.svg" className="h-6 w-auto" alt="Antigravity" />
-            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">Antigravity</span>
+            <img src="/antigravity.svg" className="h-6 w-auto" alt="Antigravity" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black opacity-80">Antigravity</span>
           </div>
-          <div title="DeepSeek">
-            <img src="/DeepSeek_logo.svg" className="h-6 w-auto" alt="DeepSeek" />
+          <div title="DeepSeek" className="flex items-center">
+            <img src="/deepseek.svg" className="h-6 w-auto grayscale" alt="DeepSeek" />
           </div>
           <div title="Gemini" className="flex items-center gap-2">
-            <img src="/Google_Gemini_icon_2025.svg" className="h-6 w-auto" alt="Gemini" />
-            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">Gemini</span>
+            <img src="/gemini.svg" className="h-6 w-auto" alt="Gemini" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black opacity-80">Gemini</span>
           </div>
-          <div title="OpenAI">
-            <img src="/OpenAI_Logo.svg" className="h-6 w-auto dark:invert" alt="OpenAI" />
+          <div title="OpenAI" className="flex items-center">
+            <img src="/openai.svg" className="h-6 w-auto dark:invert grayscale" alt="OpenAI" />
           </div>
-          <div title="Grok">
-            <img src="/Grok-feb-2025-logo.svg" className="h-5 w-auto dark:invert" alt="Grok" />
+          <div title="Grok" className="flex items-center">
+            <img src="/grok.svg" className="h-5 w-auto dark:invert grayscale" alt="Grok" />
           </div>
           <div title="Pollinations AI" className="flex items-center gap-2">
             <img src="/pollinations.svg" className="h-6 w-auto" alt="Pollinations" />
-            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">Pollinations</span>
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black opacity-80">Pollinations</span>
           </div>
-          <div title="Node.js">
-            <img src="/Node.js_logo_2015.svg" className="h-5 w-auto" alt="Node.js" />
+          <div title="Node.js" className="flex items-center">
+            <img src="/nodejs.svg" className="h-5 w-auto grayscale" alt="Node.js" />
           </div>
         </div>
       </motion.div>
