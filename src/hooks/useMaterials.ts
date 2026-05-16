@@ -50,19 +50,22 @@ export const useMaterials = () => {
       };
     });
 
-    // Group by modul
+    // Group by modul. The display order follows a professional web-learning path:
+    // internet fundamentals -> product planning -> tools -> frontend -> backend -> AI -> release -> growth/career.
     const modulTitles: Record<number, string> = {
       // PHASE 1: FOUNDATIONS
       1: 'FONDASI: DASAR INTERNET',
-      2: 'FONDASI: DOMAIN & DNS',
+      2: 'FONDASI: DOMAIN, DNS & HTTP',
+      13: 'PRODUK: UI/UX, WIREFRAME & FULLSTACK',
       3: 'FONDASI: ALAT & WORKSPACE',
       
       // PHASE 2: FRONTEND DEVELOPMENT
       4: 'FRONTEND: HTML, CSS & JS',
       5: 'FRONTEND: MODERN TECH STACK',
+      7: 'FRONTEND: ADVANCED PRACTICES',
       
       // PHASE 3: BACKEND & DATA
-      8: 'BACKEND: DATABASE & LOGIKA',
+      8: 'BACKEND: DATABASE, API & LOGIKA',
       
       // PHASE 4: MODERN DEV (AI)
       9: 'MODERN: VIBE CODING DENGAN AI',
@@ -70,11 +73,16 @@ export const useMaterials = () => {
       // PHASE 5: DEPLOYMENT & PRODUCTION
       6: 'RILIS: PROSES DEPLOY WEBSITE',
       12: 'RILIS: DARI KODING KE ONLINE',
-      10: 'RILIS: SEO & KEAMANAN',
+      10: 'RILIS: SEO, ANALITIK & KEAMANAN',
       
-      // PHASE 6: CAREER & BONUS
+      // PHASE 6: CAREER
       11: 'KARIR: MONETISASI & FREELANCE',
-      7: 'BONUS: MATERI LANJUTAN',
+    };
+
+    const modulLearningOrder = [1, 2, 13, 3, 4, 5, 7, 8, 9, 6, 12, 10, 11];
+    const getModulSortIndex = (id: number) => {
+      const index = modulLearningOrder.indexOf(id);
+      return index === -1 ? modulLearningOrder.length + id : index;
     };
 
     const grouped: Record<number, Materi[]> = {};
@@ -90,7 +98,7 @@ export const useMaterials = () => {
         title: modulTitles[parseInt(id)] || `Modul ${id}`,
         materi: items.sort((a, b) => a.frontmatter.order - b.frontmatter.order)
       }))
-      .sort((a, b) => a.id - b.id);
+      .sort((a, b) => getModulSortIndex(a.id) - getModulSortIndex(b.id));
 
     return { allMateri: parsedMateri, moduls };
   }, []);
