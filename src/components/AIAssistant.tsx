@@ -102,8 +102,10 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const headers: HeadersInit = { 'accept': 'application/json' };
-        if (API_KEY) headers['Authorization'] = `Bearer ${API_KEY}`;
+        const headers = { 
+          'Authorization': `Bearer ${API_KEY.trim()}`, 
+          'accept': 'application/json' 
+        };
         
         // Fetch Text Models
         const textRes = await fetch('https://gen.pollinations.ai/text/models', { headers });
@@ -145,7 +147,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
         console.error('Failed to fetch models:', error);
       }
     };
-    fetchData();
+    if (API_KEY) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [API_KEY]);
 
@@ -212,12 +214,12 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
 
     if (isImageRequest) {
       try {
-        const headers: HeadersInit = { 'Content-Type': 'application/json' };
-        if (API_KEY) headers['Authorization'] = `Bearer ${API_KEY}`;
-
         const response = await fetch('https://gen.pollinations.ai/v1/images/generations', {
           method: 'POST',
-          headers,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY.trim()}`
+          },
           body: JSON.stringify({
             prompt: query,
             model: selectedImageModel,
@@ -282,12 +284,12 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
           - Fokus pada edukasi dan pemahaman siswa.
         `
       };
-      const headers: HeadersInit = { 'Content-Type': 'application/json' };
-      if (API_KEY) headers['Authorization'] = `Bearer ${API_KEY}`;
-
       const response = await fetch('https://gen.pollinations.ai/text', {
         method: 'POST',
-        headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY.trim()}`
+        },
         body: JSON.stringify({
           messages: [systemMessage, ...currentMessages.map(({role, content}) => ({role, content}))],
           model: selectedTextModel,
