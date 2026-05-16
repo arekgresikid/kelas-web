@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Mail, Lock, Zap } from 'lucide-react';
+import { BookOpen, Mail, Lock, Zap, ChevronRight, Globe, Layout, ShoppingCart, Activity, Share2, Search as SearchIcon } from 'lucide-react';
 
 interface LandingProps {
   onLogin: () => void;
@@ -30,12 +30,68 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
 
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mt-8 lg:mt-20 relative z-10">
         {/* Login Card (Now first in DOM for mobile priority) */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9, y: 50 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative lg:order-2"
-        >
+        <div className="relative lg:order-2 space-y-6">
+          {/* Benefit Showcase Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative p-8 rounded-[3rem] bg-white/80 dark:bg-black/80 border border-blue-500/20 dark:border-blue-500/30 backdrop-blur-xl shadow-2xl overflow-hidden group"
+          >
+            {/* Background Glow */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-[80px] group-hover:bg-blue-500/20 transition-all duration-700"></div>
+            
+            <div className="relative space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-blue-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                  <Zap size={20} fill="currentColor" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-black uppercase tracking-widest text-black dark:text-white">Apa yang akan Anda Bangun?</h3>
+                  <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest opacity-80">Skill Riil untuk Masa Depan</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-2">
+                {[
+                  { icon: <Layout size={14} />, title: "Portfolio Tanpa Coding", desc: "Tampil profesional secara instan", link: "#" },
+                  { icon: <ShoppingCart size={14} />, title: "Toko Online Sederhana", desc: "Seperti martabakgresik.my.id", link: "https://martabakgresik.my.id" },
+                  { icon: <Globe size={14} />, title: "Web AI Generator (All-in-One)", desc: "Seperti ruangriung.my.id", link: "https://ruangriung.my.id" },
+                  { icon: <Activity size={14} />, title: "Platform Kesehatan Pintar", desc: "Seperti nutrilife-ai.pages.dev", link: "https://nutrilife-ai.pages.dev/" },
+                  { icon: <Share2 size={14} />, title: "Web Affiliate Kustom", desc: "Seperti bikinsendiri.my.id", link: "https://bikinsendiri.my.id/" },
+                  { icon: <SearchIcon size={14} />, title: "Tools SEO Mandiri", desc: "Seperti seo.ariftirtana.my.id", link: "https://seo.ariftirtana.my.id" },
+                ].map((item, idx) => (
+                  <div 
+                    key={idx} 
+                    onClick={() => item.link !== '#' && window.open(item.link)}
+                    className="flex items-center gap-3 p-3 rounded-2xl bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 hover:border-blue-500/30 hover:bg-blue-500/[0.02] transition-all group/item cursor-pointer"
+                  >
+                    <div className="w-8 h-8 rounded-xl bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 flex items-center justify-center text-black/40 dark:text-white/40 group-hover/item:text-blue-500 group-hover/item:border-blue-500/20 transition-all">
+                      {item.icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-[11px] font-black text-black/80 dark:text-white/80 group-hover/item:text-blue-600 dark:group-hover/item:text-blue-400 transition-colors">{item.title}</h4>
+                      <p className="text-[9px] font-bold text-black/30 dark:text-white/30 truncate uppercase tracking-tight">{item.desc}</p>
+                    </div>
+                    <ChevronRight size={14} className="text-black/10 dark:text-white/10 group-hover/item:text-blue-500 group-hover/item:translate-x-1 transition-all" />
+                  </div>
+                ))}
+              </div>
+              
+              <div className="pt-2 text-center">
+                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-black/20 dark:text-white/20 italic">
+                  ...dan masih banyak lagi tanpa batas!
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative"
+          >
           {/* Glowing border effect - Static for performance */}
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-[3rem] blur-xl"></div>
           
@@ -150,8 +206,9 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
             </AnimatePresence>
           </div>
         </motion.div>
+      </div>
 
-        {/* Value Proposition (Now second in DOM) */}
+      {/* Value Proposition (Now second in DOM) */}
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
