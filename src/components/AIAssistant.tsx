@@ -169,8 +169,18 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
       alert('Browser Anda tidak mendukung pengenalan suara.');
       return;
     }
-    const SpeechRecognition = (window as unknown as { webkitSpeechRecognition: any; SpeechRecognition: any }).webkitSpeechRecognition || 
-                              (window as unknown as { webkitSpeechRecognition: any; SpeechRecognition: any }).SpeechRecognition;
+    interface ISpeechRecognition {
+      lang: string;
+      start(): void;
+      onresult: (event: { results: { [key: number]: { [key: number]: { transcript: string } } } }) => void;
+      onerror: (event: unknown) => void;
+      onend: () => void;
+    }
+
+    const SpeechRecognition = ((window as unknown as Record<string, never>).webkitSpeechRecognition || 
+                               (window as unknown as Record<string, never>).SpeechRecognition) as unknown as { new(): ISpeechRecognition };
+    if (!SpeechRecognition) return;
+    
     const recognition = new SpeechRecognition();
     recognition.lang = 'id-ID';
     if (!isListening) {

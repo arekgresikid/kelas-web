@@ -198,17 +198,24 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
           <div title="Cloudflare">
             <img src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg" className="h-4 dark:invert" alt="Cloudflare" />
           </div>
-          <div title="GitHub">
-            <img src="/github.svg" className="h-6 dark:invert" alt="GitHub" />
+          <div title="Google" className="flex items-center gap-2">
+            <img src="/google-icon.svg" className="h-4 dark:brightness-200" alt="Google" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">Google</span>
           </div>
-          <div title="Antigravity">
-            <img src="/antigravity-color.svg" className="h-8 w-auto" alt="Antigravity" />
+          <div title="GitHub" className="flex items-center gap-2">
+            <img src="/github.svg" className="h-5 dark:invert" alt="GitHub" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">GitHub</span>
+          </div>
+          <div title="Antigravity" className="flex items-center gap-2">
+            <img src="/antigravity-color.svg" className="h-6 w-auto" alt="Antigravity" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">Antigravity</span>
           </div>
           <div title="DeepSeek">
             <img src="/DeepSeek_logo.svg" className="h-6 w-auto" alt="DeepSeek" />
           </div>
-          <div title="Gemini">
+          <div title="Gemini" className="flex items-center gap-2">
             <img src="/Google_Gemini_icon_2025.svg" className="h-6 w-auto" alt="Gemini" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">Gemini</span>
           </div>
           <div title="OpenAI">
             <img src="/OpenAI_Logo.svg" className="h-6 w-auto dark:invert" alt="OpenAI" />
@@ -216,8 +223,9 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
           <div title="Grok">
             <img src="/Grok-feb-2025-logo.svg" className="h-5 w-auto dark:invert" alt="Grok" />
           </div>
-          <div title="Pollinations AI">
+          <div title="Pollinations AI" className="flex items-center gap-2">
             <img src="/pollinations.svg" className="h-6 w-auto" alt="Pollinations" />
+            <span className="font-bold text-xs tracking-tighter dark:text-white text-black">Pollinations</span>
           </div>
           <div title="Node.js">
             <img src="/Node.js_logo_2015.svg" className="h-5 w-auto" alt="Node.js" />
