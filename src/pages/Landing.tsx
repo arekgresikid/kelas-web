@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -8,14 +8,23 @@ import {
 } from 'lucide-react';
 
 interface LandingProps {
-  onLogin: () => void;
   error?: string;
   renderCustomLogin?: React.ReactNode;
 }
 
-const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) => {
+const Landing: React.FC<LandingProps> = ({ error, renderCustomLogin }) => {
   const [regEmail, setRegEmail] = useState('');
   const [showQRIS, setShowQRIS] = useState(false);
+
+  useEffect(() => {
+    document.title = 'KelasWeb Indonesia - Pendaftaran';
+  }, []);
+
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const isEmailReady = isValidEmail(regEmail);
 
   const waLink = `https://wa.me/6281330763633?text=Halo%20Admin%2C%20saya%20sudah%20melakukan%20pembayaran%20via%20QRIS%20untuk%20KelasWeb.%20Mohon%20aktifkan%20akses%20untuk%20email%3A%20${encodeURIComponent(regEmail)}`;
 
@@ -23,6 +32,9 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
     { icon: <Zap size={20} />, title: "Kurikulum 2026", desc: "Materi terbaru fokus pada AI & Modern Dev." },
     { icon: <BookOpen size={20} />, title: "Project Based", desc: "Belajar sambil membangun produk nyata." },
     { icon: <Lock size={20} />, title: "Lifetime Access", desc: "Satu kali bayar untuk akses selamanya." },
+    { icon: <Activity size={20} />, title: "Expert Fullstack", desc: "Kuasai Next.js, Docker, & Arsitektur Microservices." },
+    { icon: <Globe size={20} />, title: "Cloud & DevOps", desc: "Pelajari CI/CD, GitHub Actions, dan AWS Cloud." },
+    { icon: <CheckCircle2 size={20} />, title: "Security & Testing", desc: "Pertahanan OWASP, Testing & Optimasi WPO." },
   ];
 
   const showcases = [
@@ -88,13 +100,7 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
             </div>
 
             <div className="space-y-4">
-              {renderCustomLogin ? (
-                renderCustomLogin
-              ) : (
-                <button onClick={onLogin} className="w-full bg-black dark:bg-white text-white dark:text-black py-6 rounded-2xl font-bold text-lg flex items-center justify-center gap-4 hover:scale-[1.02] active:scale-95 transition-all shadow-2xl">
-                  <Mail size={22} /> Sign in with Google
-                </button>
-              )}
+              {renderCustomLogin}
               
               {error && (
                 <motion.div 
@@ -117,7 +123,7 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
                     <button onClick={() => setShowQRIS(!showQRIS)} className="py-4 rounded-xl bg-black/5 dark:bg-white/5 text-[10px] font-black uppercase tracking-widest hover:bg-black/10 transition-all">
                       {showQRIS ? 'Tutup QRIS' : '1. Lihat QRIS'}
                     </button>
-                    <a href={regEmail ? waLink : '#'} target="_blank" rel="noopener noreferrer" className={`py-4 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${regEmail ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'bg-black/10 opacity-50 cursor-not-allowed'}`}>
+                    <a href={isEmailReady ? waLink : '#'} target="_blank" rel="noopener noreferrer" className={`py-4 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${isEmailReady ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'bg-black/10 opacity-50 cursor-not-allowed'}`}>
                       2. Konfirmasi WA
                     </a>
                   </div>

@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Terms = () => {
+  useEffect(() => {
+    document.title = 'Terms of Service - KelasWeb Indonesia';
+  }, []);
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white p-6 md:p-20">
       <div className="max-w-3xl mx-auto">

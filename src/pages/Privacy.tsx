@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Privacy = () => {
+  useEffect(() => {
+    document.title = 'Privacy Policy - KelasWeb Indonesia';
+  }, []);
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white p-6 md:p-20">
       <div className="max-w-3xl mx-auto">

@@ -80,11 +80,23 @@ export const useMaterials = () => {
       15: 'OPERASIONAL: OBSERVABILITY & MAINTENANCE',
       16: 'TRUST: LEGAL, PRIVACY & ETIKA DATA',
 
-      // PHASE 7: CAREER
+      // PHASE 7: EXPERT LEVEL (NEW 10 MODULES)
+      17: 'EXPERT: NEXT.JS & FULLSTACK MODERN',
+      18: 'EXPERT: ARSITEKTUR & SKALABILITAS BACKEND',
+      19: 'EXPERT: PENGELOLAAN DATA MODERN',
+      20: 'EXPERT: DOCKER & CONTAINERIZATION',
+      21: 'EXPERT: CI/CD & GITHUB ACTIONS',
+      22: 'EXPERT: WEBSOCKET & APLIKASI REAL-TIME',
+      23: 'EXPERT: WEB SECURITY ADVANCED',
+      24: 'EXPERT: PENGUJIAN PERANGKAT LUNAK (TESTING)',
+      25: 'EXPERT: CLOUD COMPUTING DASAR',
+      26: 'EXPERT: WEB PERFORMANCE OPTIMIZATION (WPO)',
+
+      // PHASE 8: CAREER
       11: 'KARIR: MONETISASI & FREELANCE',
     };
 
-    const modulLearningOrder = [1, 2, 13, 3, 4, 5, 7, 8, 9, 6, 12, 10, 14, 15, 16, 11];
+    const modulLearningOrder = Array.from({ length: 26 }, (_, i) => i + 1);
     const getModulSortIndex = (id: number) => {
       const index = modulLearningOrder.indexOf(id);
       return index === -1 ? modulLearningOrder.length + id : index;
@@ -105,7 +117,11 @@ export const useMaterials = () => {
       }))
       .sort((a, b) => getModulSortIndex(a.id) - getModulSortIndex(b.id));
 
-    return { allMateri: parsedMateri, moduls };
+    // Pastikan allMateri memiliki urutan yang sama persis dengan moduls
+    // Hal ini sangat penting agar tombol 'Next' dan 'Prev' bekerja secara berurutan
+    const sortedAllMateri = moduls.flatMap(modul => modul.materi);
+
+    return { allMateri: sortedAllMateri, moduls };
   }, []);
 
   return materials;

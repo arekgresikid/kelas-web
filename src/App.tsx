@@ -84,7 +84,6 @@ function AppContent() {
   if (!user || !isAuthorized) {
     return (
       <Landing 
-        onLogin={() => {}} 
         error={authError}
         renderCustomLogin={
           <div className="space-y-3">

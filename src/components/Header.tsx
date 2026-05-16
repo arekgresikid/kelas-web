@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import { BookOpen, Menu, RotateCcw, X, AlertTriangle, CheckCircle2, Search } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  BookOpen, Menu, RotateCcw, X, AlertTriangle, 
+  CheckCircle2, Search, Layout, Shield, LogOut 
+} from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
 import SearchBar from './SearchBar';
 import SearchOverlay from './SearchOverlay';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -16,6 +19,14 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const [showResetModal, setShowResetModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      document.title = 'KelasWeb Indonesia - Dashboard';
+    }
+  }, [location.pathname]);
 
   const handleReset = () => {
     localStorage.removeItem('materi_progress');
@@ -81,8 +92,11 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             </button>
             
             {user && (
-              <div className="flex items-center gap-2 sm:gap-3 pl-2 border-l border-black/10 dark:border-white/10">
-                <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-black/10 dark:border-white/10 shrink-0">
+              <div className="relative pl-2 border-l border-black/10 dark:border-white/10">
+                <button 
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-black/10 dark:border-white/10 shrink-0 hover:ring-2 ring-blue-500/50 transition-all"
+                >
                   <img 
                     src={user.picture} 
                     alt={user.name} 
@@ -91,13 +105,65 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                       (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`;
                     }}
                   />
-                </div>
-                <button 
-                  onClick={logout}
-                  className="hidden lg:flex text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
-                >
-                  Logout
                 </button>
+
+                <AnimatePresence>
+                  {isProfileOpen && (
+                    <>
+                      <div 
+                        className="fixed inset-0 z-40" 
+                        onClick={() => setIsProfileOpen(false)} 
+                      />
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        className="absolute right-0 mt-3 w-64 bg-white dark:bg-[#161616] border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
+                      >
+                        <div className="p-4 border-b border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
+                          <p className="text-xs font-black uppercase tracking-widest text-black/40 dark:text-white/40 mb-1">Signed in as</p>
+                          <p className="text-sm font-bold truncate">{user.name}</p>
+                          <p className="text-[10px] opacity-40 truncate">{user.email}</p>
+                        </div>
+                        
+                        <div className="p-2">
+                          <Link 
+                            to="/" 
+                            onClick={() => setIsProfileOpen(false)}
+                            className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                          >
+                            <Layout size={18} className="opacity-40" />
+                            Dashboard Siswa
+                          </Link>
+                          
+                          {user.role === 'admin' && (
+                            <Link 
+                              to="/admin" 
+                              onClick={() => setIsProfileOpen(false)}
+                              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-blue-600 dark:text-blue-400"
+                            >
+                              <Shield size={18} />
+                              Admin Panel
+                            </Link>
+                          )}
+                        </div>
+
+                        <div className="p-2 border-t border-black/5 dark:border-white/5">
+                          <button 
+                            onClick={() => {
+                              setIsProfileOpen(false);
+                              logout();
+                            }}
+                            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                          >
+                            <LogOut size={18} />
+                            Logout
+                          </button>
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
             )}
           </div>

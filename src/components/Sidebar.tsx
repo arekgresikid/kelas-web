@@ -33,7 +33,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing) return;
-      let newWidth = e.clientX;
+      const sidebarElement = document.getElementById('app-sidebar');
+      const offsetLeft = sidebarElement ? sidebarElement.getBoundingClientRect().left : 0;
+      
+      let newWidth = e.clientX - offsetLeft;
       if (newWidth < 280) newWidth = 280;
       if (newWidth > 500) newWidth = 500;
       setSidebarWidth(newWidth);
@@ -82,6 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
 
   return (
     <aside 
+      id="app-sidebar"
       style={{ width: isOpen ? '100%' : (window.innerWidth >= 1024 ? `${sidebarWidth}px` : '18rem') }}
       className={cn(
         "fixed inset-y-0 left-0 z-50 transform lg:sticky lg:top-16 lg:z-30 lg:translate-x-0 transition-[transform,opacity] duration-300 ease-in-out bg-white dark:bg-[#161616] border-r border-black dark:border-white/10 lg:h-[calc(100vh-64px)] flex flex-col",

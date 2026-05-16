@@ -1,7 +1,11 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Shield, Rocket, Heart } from 'lucide-react';
 
 const About = () => {
+  useEffect(() => {
+    document.title = 'About - KelasWeb Indonesia';
+  }, []);
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white p-8 md:p-16 lg:p-24 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
       <div className="max-w-4xl mx-auto space-y-24">

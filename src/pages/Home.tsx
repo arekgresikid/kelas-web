@@ -13,7 +13,12 @@ import {
   Banknote, 
   Rocket,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Server,
+  Cloud,
+  Activity,
+  CheckCircle2,
+  Clock
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useMaterials } from '../hooks/useMaterials';
@@ -43,11 +48,11 @@ const Home = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-16 py-4 md:py-8">
       {/* Header Section */}
-      <section className="relative overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-black dark:bg-white p-8 md:p-16 text-white dark:text-black">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 dark:bg-black/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+      <section className="relative overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-black dark:bg-white p-6 md:p-12 text-white dark:text-black">
+        <div className="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-white/10 dark:bg-black/5 rounded-full blur-3xl -mr-24 -mt-24 md:-mr-32 md:-mt-32"></div>
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-12">
           {user && (
-            <div className="w-24 h-24 md:w-32 md:h-32 rounded-[2rem] border-4 border-white/20 dark:border-black/10 overflow-hidden shadow-2xl bg-black/5 dark:bg-white/5">
+            <div className="w-20 h-20 md:w-32 md:h-32 rounded-3xl md:rounded-[2rem] border-4 border-white/20 dark:border-black/10 overflow-hidden shadow-2xl bg-black/5 dark:bg-white/5 flex-shrink-0">
               <img 
                 src={user.picture} 
                 alt={user.name} 
@@ -63,7 +68,7 @@ const Home = () => {
               <Sparkles size={12} />
               Selamat Belajar
             </div>
-            <h1 className="text-4xl md:text-6xl font-black leading-tight">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight">
               Halo, {user?.name.split(' ')[0] || 'Kawan'}! 👋
             </h1>
             <p className="text-lg md:text-xl opacity-60 max-w-xl">
@@ -88,8 +93,8 @@ const Home = () => {
       </section>
 
       {/* Progress Bar Detail */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-black/5 dark:bg-white/5 p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors">
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="bg-black/5 dark:bg-white/5 p-6 md:p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors">
           <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.2em] mb-2">Materi Selesai</p>
           <p className="text-4xl font-black">{completedCount} <span className="text-lg opacity-20">/ {totalCount}</span></p>
           <div className="mt-6 h-3 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
@@ -101,7 +106,7 @@ const Home = () => {
             />
           </div>
         </div>
-        <div className="bg-black/5 dark:bg-white/5 p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors">
+        <div className="bg-black/5 dark:bg-white/5 p-6 md:p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors">
           <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.2em] mb-2">Status Akun</p>
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
@@ -109,7 +114,7 @@ const Home = () => {
           </div>
           <p className="mt-3 text-xs opacity-40 font-medium truncate">ID: {user?.email}</p>
         </div>
-        <div className="bg-black/5 dark:bg-white/5 p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors flex flex-col justify-between">
+        <div className="bg-black/5 dark:bg-white/5 p-6 md:p-8 rounded-[2rem] border border-black/10 dark:border-white/10 group hover:border-black dark:hover:border-white transition-colors flex flex-col justify-between">
           <div>
             <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.2em] mb-2">Materi Berikutnya</p>
             <p className="text-xl font-bold leading-tight line-clamp-1">{continueMateri?.frontmatter.title || 'Selesai Semua!'}</p>
@@ -132,11 +137,13 @@ const Home = () => {
         <div className="space-y-12">
           {[
             { title: 'FASE 1: FONDASI', moduls: [1, 2, 3] },
-            { title: 'FASE 2: FRONTEND', moduls: [4, 5] },
-            { title: 'FASE 3: BACKEND', moduls: [8] },
-            { title: 'FASE 4: MODERN DEV (AI)', moduls: [9] },
-            { title: 'FASE 5: DEPLOYMENT & RILIS', moduls: [6, 12, 10] },
-            { title: 'FASE 6: KARIR & BONUS', moduls: [11, 7] },
+            { title: 'FASE 2: FRONTEND & RILIS AWAL', moduls: [4, 5, 6, 7] },
+            { title: 'FASE 3: BACKEND & AI', moduls: [8, 9] },
+            { title: 'FASE 4: OPTIMASI & KARIR', moduls: [10, 11, 12] },
+            { title: 'FASE 5: PRODUCT ENGINEERING', moduls: [13, 14, 15, 16] },
+            { title: 'FASE 6: FULLSTACK ADVANCED', moduls: [17, 18, 19, 20] },
+            { title: 'FASE 7: INFRASTRUCTURE & SECURITY', moduls: [21, 22, 23] },
+            { title: 'FASE 8: CLOUD & PERFORMANCE', moduls: [24, 25, 26] },
           ].map((fase) => {
             const faseModuls = moduls.filter(m => fase.moduls.includes(m.id));
             if (faseModuls.length === 0) return null;
@@ -152,24 +159,38 @@ const Home = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   {faseModuls.map((modul, i) => {
-                    const getIcon = (id: number) => {
-                      const iconProps = { size: 24, className: "text-black dark:text-white" };
-                      const icons: Record<number, React.ReactNode> = {
-                        1: <BookOpen {...iconProps} />, 
-                        2: <Globe {...iconProps} />, 
-                        3: <Wrench {...iconProps} />, 
-                        4: <Layout {...iconProps} />, 
-                        5: <Layers {...iconProps} />, 
-                        6: <Package {...iconProps} />, 
-                        7: <Gift {...iconProps} />, 
-                        8: <Database {...iconProps} />, 
-                        9: <Bot {...iconProps} />, 
-                        10: <ShieldCheck {...iconProps} />, 
-                        11: <Banknote {...iconProps} />, 
-                        12: <Rocket {...iconProps} />
+                      const getIcon = (id: number) => {
+                        const iconProps = { size: 24, className: "text-black dark:text-white" };
+                        const icons: Record<number, React.ReactNode> = {
+                          1: <BookOpen {...iconProps} />, 
+                          2: <Globe {...iconProps} />, 
+                          3: <Wrench {...iconProps} />, 
+                          4: <Layout {...iconProps} />, 
+                          5: <Layers {...iconProps} />, 
+                          6: <Package {...iconProps} />, 
+                          7: <Gift {...iconProps} />, 
+                          8: <Database {...iconProps} />, 
+                          9: <Bot {...iconProps} />, 
+                          10: <ShieldCheck {...iconProps} />, 
+                          11: <Banknote {...iconProps} />, 
+                          12: <Rocket {...iconProps} />,
+                          13: <Layout {...iconProps} />,
+                          14: <CheckCircle2 {...iconProps} />,
+                          15: <Activity {...iconProps} />,
+                          16: <ShieldCheck {...iconProps} />,
+                          17: <Layers {...iconProps} />,
+                          18: <Server {...iconProps} />,
+                          19: <Database {...iconProps} />,
+                          20: <Package {...iconProps} />,
+                          21: <Rocket {...iconProps} />,
+                          22: <Clock {...iconProps} />,
+                          23: <ShieldCheck {...iconProps} />,
+                          24: <CheckCircle2 {...iconProps} />,
+                          25: <Cloud {...iconProps} />,
+                          26: <Activity {...iconProps} />
+                        };
+                        return icons[id] || <BookOpen {...iconProps} />;
                       };
-                      return icons[id] || <BookOpen {...iconProps} />;
-                    };
 
                     return (
                       <motion.div 
@@ -178,7 +199,7 @@ const Home = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.05 }}
-                        className="p-8 rounded-[3rem] bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-all group shadow-sm hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5 relative overflow-hidden"
+                        className="p-6 md:p-8 rounded-3xl md:rounded-[3rem] bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-all group shadow-sm hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5 relative overflow-hidden flex flex-col h-full"
                       >
                         {/* Background subtle number */}
                         <span className="absolute -bottom-10 -right-5 text-[150px] font-black opacity-[0.02] dark:opacity-[0.05] pointer-events-none select-none">
@@ -195,15 +216,20 @@ const Home = () => {
                           </div>
                         </div>
 
-                        <div className="space-y-6">
-                          <ul className="space-y-3 ml-1 relative z-10">
+                        <div className="space-y-6 flex-1 flex flex-col justify-between">
+                          <ul className="space-y-3 ml-1 relative z-10 flex-1">
                             {modul.materi.map(m => (
-                              <li key={m.slug} className="text-sm text-black/60 dark:text-white/60 flex items-center gap-3">
+                              <li key={m.slug} className="text-sm text-black/60 dark:text-white/60 flex items-start gap-3">
                                 <div className={cn(
-                                  "w-2 h-2 rounded-full transition-all",
+                                  "w-2 h-2 rounded-full transition-all mt-1.5 flex-shrink-0",
                                   progress[m.slug] ? "bg-green-500 scale-125 shadow-[0_0_10px_rgba(34,197,94,0.5)]" : "bg-black/10 dark:bg-white/10"
                                 )} />
-                                <span className={progress[m.slug] ? "text-black dark:text-white font-medium" : ""}>{m.frontmatter.title}</span>
+                                <span className={cn(
+                                  "line-clamp-2 leading-snug", 
+                                  progress[m.slug] ? "text-black dark:text-white font-medium" : ""
+                                )}>
+                                  {m.frontmatter.title}
+                                </span>
                               </li>
                             ))}
                           </ul>

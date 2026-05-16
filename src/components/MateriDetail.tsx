@@ -35,6 +35,8 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
   const isFrontendModul = materi.frontmatter.modul === 4 || materi.frontmatter.modul === 5;
 
   useEffect(() => {
+    document.title = `${materi.frontmatter.title} - KelasWeb`;
+    
     queueMicrotask(() => {
       const progress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
       setSubProgress(progress[materi.slug] || {});
