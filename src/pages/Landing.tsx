@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { BookOpen, Mail, Lock, Zap } from 'lucide-react';
 
 interface LandingProps {
