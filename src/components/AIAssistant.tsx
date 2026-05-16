@@ -316,7 +316,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
   };
 
   return (
-    <div className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-[9999]">
+    <div className="fixed bottom-[5px] right-[5px] md:bottom-8 md:right-8 z-[9999]">
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -327,7 +327,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
               y: 0,
             }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className={`absolute bottom-[84px] right-0 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? 'rounded-2xl w-[72px] h-[72px]' : 'rounded-[2rem] w-[calc(100vw-2rem)] sm:w-[400px] md:w-[450px] h-[min(650px,calc(100vh-140px))]'}`}
+            className={`absolute bottom-0 right-0 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? 'rounded-2xl w-[72px] h-[72px]' : 'rounded-xl md:rounded-[2rem] w-[calc(100vw-10px)] sm:w-[400px] md:w-[450px] h-[calc(100vh-10px)] md:h-[min(650px,calc(100vh-140px))]'}`}
           >
             {/* Header Area */}
             <div className="p-3 md:p-4 bg-black dark:bg-zinc-800 text-white shrink-0">
