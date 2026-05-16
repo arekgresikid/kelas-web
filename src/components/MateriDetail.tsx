@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
@@ -15,6 +16,18 @@ interface MateriDetailProps {
   onNext?: () => void;
   onPrev?: () => void;
 }
+
+const getTextFromChildren = (children: ReactNode): string => {
+  if (typeof children === 'string' || typeof children === 'number') return String(children);
+  if (Array.isArray(children)) return children.map(getTextFromChildren).join('');
+  return '';
+};
+
+const createHeadingId = (children: ReactNode) => getTextFromChildren(children)
+  .toLowerCase()
+  .replace(/\s+/g, '-')
+  .replace(/[^\w-]/g, '');
+
 const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
   const [subProgress, setSubProgress] = useState<Record<string, boolean>>({});
   const { toggleProgress } = useProgress();
@@ -22,8 +35,10 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
   const isFrontendModul = materi.frontmatter.modul === 4 || materi.frontmatter.modul === 5;
 
   useEffect(() => {
-    const progress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
-    setSubProgress(progress[materi.slug] || {});
+    queueMicrotask(() => {
+      const progress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
+      setSubProgress(progress[materi.slug] || {});
+    });
     
     // Simpan materi terakhir yang dibaca untuk dashboard
     localStorage.setItem('last_read_materi', materi.slug);
@@ -98,7 +113,14 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
             remarkPlugins={[remarkGfm]} 
             rehypePlugins={[rehypeHighlight]}
             components={{
-              code({ node, className, children, ...props }) {
+              h2({ children, ...props }) {
+                return (
+                  <h2 id={createHeadingId(children)} {...props}>
+                    {children}
+                  </h2>
+                );
+              },
+              code({ className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || '');
                 const isMermaid = match?.[1] === 'mermaid';
                 

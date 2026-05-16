@@ -75,11 +75,16 @@ export const useMaterials = () => {
       12: 'RILIS: DARI KODING KE ONLINE',
       10: 'RILIS: SEO, ANALITIK & KEAMANAN',
       
-      // PHASE 6: CAREER
+      // PHASE 6: QUALITY, OPERATIONS & TRUST
+      14: 'PRODUKSI: QA & LAUNCH READINESS',
+      15: 'OPERASIONAL: OBSERVABILITY & MAINTENANCE',
+      16: 'TRUST: LEGAL, PRIVACY & ETIKA DATA',
+
+      // PHASE 7: CAREER
       11: 'KARIR: MONETISASI & FREELANCE',
     };
 
-    const modulLearningOrder = [1, 2, 13, 3, 4, 5, 7, 8, 9, 6, 12, 10, 11];
+    const modulLearningOrder = [1, 2, 13, 3, 4, 5, 7, 8, 9, 6, 12, 10, 14, 15, 16, 11];
     const getModulSortIndex = (id: number) => {
       const index = modulLearningOrder.indexOf(id);
       return index === -1 ? modulLearningOrder.length + id : index;
