@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Mail, Lock, Zap } from 'lucide-react';
+import { BookOpen, Mail, Lock, Zap, Code } from 'lucide-react';
 
 interface LandingProps {
   onLogin: () => void;
@@ -22,10 +22,10 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0d0d0d] flex flex-col items-center p-6 relative overflow-x-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20 dark:opacity-40">
-        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-500 rounded-full blur-[100px] animate-pulse will-change-[transform,opacity]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-purple-500 rounded-full blur-[100px] animate-pulse delay-700 will-change-[transform,opacity]" />
+      {/* Background Decor - Optimized with gradients instead of heavy blurs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-30 dark:opacity-50">
+        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-[radial-gradient(circle,rgba(59,130,246,0.3)_0%,transparent_70%)] animate-pulse will-change-opacity" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-[radial-gradient(circle,rgba(168,85,247,0.3)_0%,transparent_70%)] animate-pulse delay-700 will-change-opacity" />
       </div>
 
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mt-8 lg:mt-20 relative z-10">
@@ -36,10 +36,10 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
           transition={{ duration: 0.6, delay: 0.2 }}
           className="relative lg:order-2"
         >
-          {/* Glowing border effect */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[3rem] blur-xl opacity-20 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+          {/* Glowing border effect - Static for performance */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-[3rem] blur-xl"></div>
           
-          <div className="relative bg-white/90 dark:bg-black/90 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[3rem] p-8 md:p-12 space-y-8 shadow-2xl overflow-hidden">
+          <div className="relative bg-white/95 dark:bg-black/95 border border-black/5 dark:border-white/10 rounded-[3rem] p-8 md:p-12 space-y-8 shadow-2xl overflow-hidden">
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="w-16 h-16 bg-black dark:bg-white rounded-2xl flex items-center justify-center shadow-2xl">
                 <img src="/favicon.svg" alt="Logo" className="w-10 h-10 dark:invert" />
@@ -158,7 +158,7 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="space-y-10 text-center lg:text-left lg:order-1"
         >
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
             <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Pendaftaran Dibuka - Batch 2026</span>
           </div>
@@ -174,7 +174,7 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4">
             {features.map((f, i) => (
-              <div key={i} className="p-6 rounded-3xl bg-white/50 dark:bg-white/5 border border-black/5 dark:border-white/5 backdrop-blur-sm space-y-3">
+              <div key={i} className="p-6 rounded-3xl bg-white/80 dark:bg-white/5 border border-black/5 dark:border-white/5 space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">
                   {f.icon}
                 </div>
@@ -186,12 +186,42 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
         </motion.div>
       </div>
 
+      {/* Brand Support Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        className="mt-20 flex flex-col items-center gap-8 w-full max-w-4xl"
+      >
+        <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-30">Powered & Supported By</p>
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+          <div className="flex items-center gap-2 font-bold text-sm">
+            <img src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg" className="h-4 dark:invert" alt="Cloudflare" />
+          </div>
+          <div className="flex items-center gap-2 font-bold text-sm">
+            <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" className="h-4 dark:brightness-200" alt="Google" />
+          </div>
+          <div className="flex items-center gap-2 font-bold text-sm">
+            <BookOpen size={16} /> <span className="tracking-tighter">GitHub</span>
+          </div>
+          <div className="flex items-center gap-2 font-bold text-sm">
+            <Zap size={16} className="text-blue-500" /> <span className="tracking-tighter">Antigravity</span>
+          </div>
+          <div className="flex items-center gap-2 font-bold text-sm">
+            <Code size={16} /> <span className="tracking-tighter">VS Code</span>
+          </div>
+          <div className="flex items-center gap-2 font-bold text-sm">
+            <Zap size={16} className="text-green-500" /> <span className="tracking-tighter">Node.js</span>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Trust Badges / Users */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
-        className="flex flex-col items-center gap-6 mt-20 lg:mt-32 pb-12"
+        className="flex flex-col items-center gap-6 mt-16 pb-12"
       >
         <div className="flex items-center gap-4">
           <div className="flex -space-x-3">
