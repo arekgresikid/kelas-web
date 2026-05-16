@@ -195,23 +195,40 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
       >
         <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-30">Powered & Supported By</p>
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-          <div className="flex items-center gap-2 font-bold text-sm">
+          <div className="flex items-center gap-2" title="Cloudflare">
             <img src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg" className="h-4 dark:invert" alt="Cloudflare" />
           </div>
-          <div className="flex items-center gap-2 font-bold text-sm">
-            <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" className="h-4 dark:brightness-200" alt="Google" />
+          <div className="flex items-center gap-2" title="Google">
+            <img src="/google-icon.svg" className="h-4 dark:brightness-200" alt="Google" />
+            <span className="font-bold text-sm tracking-tighter dark:text-white text-black">Google</span>
           </div>
-          <div className="flex items-center gap-2 font-bold text-sm">
-            <BookOpen size={16} /> <span className="tracking-tighter">GitHub</span>
+          
+          {/* GitHub SVG */}
+          <div className="flex items-center gap-2" title="GitHub">
+            <img src="/github.svg" className="h-5 w-5 dark:invert" alt="GitHub" />
+            <span className="font-bold text-sm tracking-tighter dark:text-white text-black">GitHub</span>
           </div>
-          <div className="flex items-center gap-2 font-bold text-sm">
-            <Zap size={16} className="text-blue-500" /> <span className="tracking-tighter">Antigravity</span>
+
+          {/* Antigravity SVG */}
+          <div className="flex items-center gap-2" title="Antigravity">
+            <img src="/antigravity-color.svg" className="h-5 w-auto" alt="Antigravity" />
+            <span className="font-bold text-sm tracking-tighter dark:text-white text-black">Antigravity</span>
           </div>
-          <div className="flex items-center gap-2 font-bold text-sm">
-            <Code size={16} /> <span className="tracking-tighter">VS Code</span>
+
+          {/* VS Code SVG */}
+          <div className="flex items-center gap-2" title="VS Code">
+            <svg className="h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#007ACC" d="M23.507 4.026l-3.393-2.614a1.002 1.002 0 00-1.12-.036L12.51 5.342l-7.25-5.342a1 1 0 00-1.218.067l-3.52 3.129a1 1 0 00-.012 1.488L5.783 12 .51 17.316a1 1 0 00.012 1.488l3.52 3.129a1 1 0 001.218.067l7.25-5.342 6.484 3.966a1.002 1.002 0 001.12-.036l3.393-2.614a1 1 0 00.493-.814V4.84a1 1 0 00-.493-.814zM16.422 12L7.336 6.136l8.03-5.228L21.36 4.305 16.422 12zm0 0l4.938 7.695-5.994 3.397-8.03-5.228L16.422 12z"/>
+            </svg>
+            <span className="font-bold text-sm tracking-tighter dark:text-white text-black">VS Code</span>
           </div>
-          <div className="flex items-center gap-2 font-bold text-sm">
-            <Zap size={16} className="text-green-500" /> <span className="tracking-tighter">Node.js</span>
+
+          {/* Node.js SVG */}
+          <div className="flex items-center gap-2" title="Node.js">
+            <svg className="h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#339933" d="M11.96 0L0 6.905v13.805L11.96 24 24 17.11V3.295L11.96 0zm0 2.215L21.7 7.825v10.51l-9.74 5.61-9.74-5.61V7.825l9.74-5.61zM10.235 15.55v-3.725h-.9v3.725h.9zm3.53-5.6h-.9v3.725h.9v-3.725zm0 4.625h-.9v.925h.9v-.925zm-2.63-4.625h-.9v3.725h.9v-3.725zm0 4.625h-.9v.925h.9v-.925zm6.16-4.625h-.9v3.725h.9v-3.725zm0 4.625h-.9v.925h.9v-.925z"/>
+            </svg>
+            <span className="font-bold text-sm tracking-tighter dark:text-white text-black">Node.js</span>
           </div>
         </div>
       </motion.div>
