@@ -327,7 +327,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
               y: 0,
             }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className={`absolute bottom-[84px] right-0 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? 'rounded-2xl w-[220px] h-[72px]' : 'rounded-[2rem] w-[calc(100vw-2rem)] sm:w-[400px] md:w-[450px] h-[min(650px,calc(100vh-140px))]'}`}
+            className={`absolute bottom-[84px] right-0 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? 'rounded-2xl w-[72px] h-[72px]' : 'rounded-[2rem] w-[calc(100vw-2rem)] sm:w-[400px] md:w-[450px] h-[min(650px,calc(100vh-140px))]'}`}
           >
             {/* Header Area */}
             <div className="p-3 md:p-4 bg-black dark:bg-zinc-800 text-white shrink-0">
@@ -605,23 +605,30 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
         )}
       </AnimatePresence>
 
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => {
-          if (isOpen && isMinimized) setIsMinimized(false);
-          else setIsOpen(!isOpen);
-        }}
-        className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-2xl shadow-2xl flex items-center justify-center group relative overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity rounded-2xl" />
-        {isOpen && !isMinimized ? <X size={28} /> : (
-          <div className="relative">
-            <selectedPersona.icon size={28} />
-            <span className="absolute -top-4 -right-4 w-5 h-5 bg-blue-600 border-4 border-[#fafafa] dark:border-[#0d0d0d] rounded-full animate-bounce" />
-          </div>
+      <AnimatePresence>
+        {(!isOpen || isMinimized) && (
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              if (isOpen && isMinimized) setIsMinimized(false);
+              else setIsOpen(true);
+            }}
+            className="w-14 h-14 bg-black dark:bg-white text-white dark:text-black rounded-2xl shadow-2xl flex items-center justify-center group relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity rounded-2xl" />
+            <div className="relative">
+              <selectedPersona.icon size={24} />
+              {!isOpen && (
+                <span className="absolute -top-3 -right-3 w-4 h-4 bg-blue-600 border-4 border-[#fafafa] dark:border-[#0d0d0d] rounded-full animate-bounce" />
+              )}
+            </div>
+          </motion.button>
         )}
-      </motion.button>
+      </AnimatePresence>
     </div>
   );
 };
