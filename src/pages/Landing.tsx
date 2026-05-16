@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  BookOpen, Mail, Lock, Zap, Globe, Layout, 
+  BookOpen, Lock, Zap, Globe, Layout, 
   ShoppingCart, Activity, Share2, Search as SearchIcon, 
   CheckCircle2, Star, ArrowRight
 } from 'lucide-react';
