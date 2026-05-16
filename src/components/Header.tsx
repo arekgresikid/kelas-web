@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { BookOpen, Menu, RotateCcw, X, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Menu, RotateCcw, X, AlertTriangle, CheckCircle2, Search } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
 import SearchBar from './SearchBar';
+import SearchOverlay from './SearchOverlay';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +15,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { logout, user } = useAuth();
   const [showResetModal, setShowResetModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleReset = () => {
     localStorage.removeItem('materi_progress');
@@ -28,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   return (
     <>
       <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-[#0d0d0d]/90 backdrop-blur-md border-b border-black dark:border-white/10">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        <div className="container mx-auto px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <button 
               onClick={onMenuClick}
@@ -51,6 +53,14 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="md:hidden p-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-lg transition-colors"
+              title="Cari Materi"
+            >
+              <Search size={24} className="text-black dark:text-white" />
+            </button>
+            
             {user?.role === 'admin' && (
               <Link 
                 to="/admin" 
@@ -160,6 +170,11 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <SearchOverlay 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+      />
     </>
   );
 };
