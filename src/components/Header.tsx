@@ -64,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             {user?.role === 'admin' && (
               <Link 
                 to="/admin" 
-                className="hidden lg:flex px-3 py-1 text-[10px] font-black uppercase tracking-widest border border-black dark:border-white rounded-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+                className="hidden sm:flex px-3 py-1 text-[10px] font-black uppercase tracking-widest border border-black dark:border-white rounded-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
               >
                 Admin
               </Link>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ChevronRight, CheckCircle2, X, ChevronDown, Home, LogOut } from 'lucide-react';
+import { ChevronRight, CheckCircle2, X, ChevronDown, Home, LogOut, Lock } from 'lucide-react';
 import { useMaterials } from '../hooks/useMaterials';
 import { useProgress } from '../context/ProgressContext';
 import { useAuth } from '../hooks/useAuth';
@@ -127,6 +127,25 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
             </>
           )}
         </NavLink>
+
+        {/* Admin Link - Mobile & Tablet priority */}
+        {user?.role === 'admin' && (
+          <NavLink
+            to="/admin"
+            onClick={onItemClick}
+            className={({ isActive }) => cn(
+              "flex items-center gap-3 px-3 py-3 rounded-xl transition-all border mb-4",
+              isActive 
+                ? "bg-red-500 text-white font-bold shadow-lg shadow-red-500/20" 
+                : "bg-red-500/5 hover:bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/10"
+            )}
+          >
+            <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${location.pathname === '/admin' ? 'bg-white/20' : 'bg-red-500/10'}`}>
+              <Lock size={14} />
+            </div>
+            <span className="text-xs font-bold uppercase tracking-widest">Panel Admin</span>
+          </NavLink>
+        )}
 
         <div className="h-px bg-black/10 dark:bg-white/10 mx-3 mb-6" />
 
