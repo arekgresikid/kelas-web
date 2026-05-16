@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Mail, Lock, Zap } from 'lucide-react';
 
@@ -261,9 +262,15 @@ const Landing: React.FC<LandingProps> = ({ onLogin, error, renderCustomLogin }) 
           </div>
         </div>
         
+        <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-[10px] font-bold uppercase tracking-widest text-black/40 dark:text-white/40">
+          <Link to="/about" className="hover:text-black dark:hover:text-white transition-colors">About</Link>
+          <Link to="/privacy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</Link>
+          <Link to="/terms" className="hover:text-black dark:hover:text-white transition-colors">Terms</Link>
+        </div>
+
         <div className="h-px w-24 bg-black/5 dark:bg-white/10" />
         
-        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-black/10 dark:text-white/10 italic">
+        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-black/10 dark:text-white/10 italic text-center">
           &copy; 2026 KelasWeb Indonesia &bull; Build with Antigravity
         </p>
       </motion.div>
