@@ -103,7 +103,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
     const fetchData = async () => {
       try {
         const headers = { 
-          'Authorization': `Bearer ${API_KEY.trim()}`, 
+          'Authorization': `Bearer ${(API_KEY || "").trim()}`, 
           'accept': 'application/json' 
         };
         
@@ -218,7 +218,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${API_KEY.trim()}`
+            'Authorization': `Bearer ${(API_KEY || "").trim()}`
           },
           body: JSON.stringify({
             prompt: query,
@@ -288,7 +288,7 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${API_KEY.trim()}`
+          'Authorization': `Bearer ${(API_KEY || "").trim()}`
         },
         body: JSON.stringify({
           messages: [systemMessage, ...currentMessages.map(({role, content}) => ({role, content}))],
@@ -325,28 +325,26 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
               opacity: 1, 
               scale: 1, 
               y: 0,
-              height: isMinimized ? '72px' : 'min(700px, calc(100vh - 120px))',
-              width: isMinimized ? '220px' : (window.innerWidth < 640 ? 'calc(100vw - 2rem)' : '450px')
             }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className={`absolute bottom-[84px] right-0 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? 'rounded-2xl' : 'rounded-[2rem]'}`}
+            className={`absolute bottom-[84px] right-0 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? 'rounded-2xl w-[220px] h-[72px]' : 'rounded-[2rem] w-[calc(100vw-2rem)] sm:w-[400px] md:w-[450px] h-[min(650px,calc(100vh-140px))]'}`}
           >
             {/* Header Area */}
-            <div className="p-4 bg-black dark:bg-zinc-800 text-white shrink-0">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                    <selectedPersona.icon size={22} className={isLoading ? 'animate-pulse' : ''} />
+            <div className="p-3 md:p-4 bg-black dark:bg-zinc-800 text-white shrink-0">
+              <div className="flex items-center justify-between gap-1 md:gap-2">
+                <div className="flex items-center gap-2 md:gap-3 min-w-0 overflow-hidden">
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                    <selectedPersona.icon size={18} className={`md:size-[22px] ${isLoading ? 'animate-pulse' : ''}`} />
                   </div>
                   {!isMinimized && (
-                    <div className="min-w-0">
-                      <h3 className="font-bold text-sm truncate">Kelas Web AI</h3>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-bold text-xs md:text-sm truncate leading-tight">Kelas Web AI</h3>
                       <div className="relative" ref={dropdownRef}>
                         <button 
                           onClick={() => setShowModels(!showModels)}
-                          className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity"
+                          className="flex items-center gap-1 text-[8px] md:text-[9px] font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity truncate max-w-full"
                         >
-                          {selectedTextModel} <ChevronDown size={10} />
+                          <span className="truncate">{selectedTextModel}</span> <ChevronDown size={8} />
                         </button>
                         <AnimatePresence>
                           {showModels && (
@@ -373,22 +371,22 @@ const AIAssistant = ({ context }: AIAssistantProps) => {
                   )}
                 </div>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5 md:gap-1">
                   {!isMinimized && (
                     <>
-                      <button onClick={() => setShowSettings(!showSettings)} className={`p-2 rounded-lg transition-colors ${showSettings ? 'bg-white/20' : 'hover:bg-white/10'}`} title="Persona Settings">
-                        <Settings size={16} />
+                      <button onClick={() => setShowSettings(!showSettings)} className={`p-1.5 md:p-2 rounded-lg transition-colors ${showSettings ? 'bg-white/20' : 'hover:bg-white/10'}`} title="Persona Settings">
+                        <Settings size={14} className="md:size-[16px]" />
                       </button>
-                      <button onClick={() => setMessages([])} className="p-2 hover:bg-white/10 rounded-lg transition-colors" title="Reset">
-                        <Trash2 size={16} />
+                      <button onClick={() => setMessages([])} className="p-1.5 md:p-2 hover:bg-white/10 rounded-lg transition-colors" title="Reset">
+                        <Trash2 size={14} className="md:size-[16px]" />
                       </button>
                     </>
                   )}
-                  <button onClick={() => setIsMinimized(!isMinimized)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                    {isMinimized ? <Maximize2 size={18} /> : <MinusCircle size={18} />}
+                  <button onClick={() => setIsMinimized(!isMinimized)} className="p-1.5 md:p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    {isMinimized ? <Maximize2 size={16} className="md:size-[18px]" /> : <MinusCircle size={16} className="md:size-[18px]" />}
                   </button>
-                  <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                    <X size={20} />
+                  <button onClick={() => setIsOpen(false)} className="p-1.5 md:p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <X size={18} className="md:size-[20px]" />
                   </button>
                 </div>
               </div>
