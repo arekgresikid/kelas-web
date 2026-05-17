@@ -134,9 +134,13 @@ Metode: ${regMethod}
                     </button>
                     <a href={isFormReady ? waLink : '#'} target="_blank" rel="noopener noreferrer" className={`py-4 rounded-xl flex flex-col items-center justify-center transition-all ${isFormReady ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'bg-black/10 opacity-50 cursor-not-allowed'}`}>
                       <span className="text-[10px] font-black uppercase tracking-widest">2. Konfirmasi WA</span>
-                      {isFormReady && <span className="text-[8px] mt-1 opacity-80">*Jangan lupa lampirkan bukti transfer</span>}
                     </a>
                   </div>
+                  {isFormReady && (
+                    <p className="text-[10px] text-center italic text-black/50 dark:text-white/50">
+                      *Jangan lupa siapkan screenshot bukti transfer untuk dilampirkan via chat.
+                    </p>
+                  )}
                   <AnimatePresence>
                     {showQRIS && (
                       <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="p-6 bg-white rounded-[2rem] border border-black/5 flex flex-col items-center gap-4">
