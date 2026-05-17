@@ -233,27 +233,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
         })}
       </nav>
 
-      {/* User Profile & Logout - Visible on Mobile Sidebar */}
-      <div className="p-4 border-t border-black/10 dark:border-white/10 space-y-4">
-        {user && (
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-10 h-10 rounded-full border border-black/10 dark:border-white/10 overflow-hidden">
-              <img src={user.picture} alt={user.name} className="w-full h-full object-cover" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-black dark:text-white truncate">{user.name}</p>
-              <p className="text-[10px] font-black uppercase tracking-widest opacity-40 truncate">{user.role || 'Siswa'}</p>
-            </div>
-          </div>
-        )}
-        <button
-          onClick={logout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-100 dark:hover:bg-red-950/40 transition-all font-bold text-xs uppercase tracking-widest"
-        >
-          <LogOut size={16} />
-          Keluar (Logout)
-        </button>
-      </div>
     </aside>
   );
 };
