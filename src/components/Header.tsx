@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   BookOpen, Menu, RotateCcw, X, AlertTriangle, 
   CheckCircle2, Search, Layout, Shield, LogOut 
@@ -19,6 +19,19 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const location = useLocation();
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false);
+      }
+    };
+    if (isProfileOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isProfileOpen]);
 
   useEffect(() => {
     if (location.pathname === '/') {
@@ -90,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             </button>
             
             {user && (
-              <div className="relative pl-2 border-l border-black/10 dark:border-white/10">
+              <div ref={profileRef} className="relative pl-2 border-l border-black/10 dark:border-white/10">
                 <button 
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                   className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-black/10 dark:border-white/10 shrink-0 hover:ring-2 ring-blue-500/50 transition-all"
@@ -107,17 +120,12 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 
                 <AnimatePresence>
                   {isProfileOpen && (
-                    <>
-                      <div 
-                        className="fixed inset-0 z-40" 
-                        onClick={() => setIsProfileOpen(false)} 
-                      />
-                      <motion.div 
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        className="absolute right-0 mt-3 w-64 bg-white dark:bg-[#161616] border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
-                      >
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute right-0 mt-3 w-64 bg-white dark:bg-[#161616] border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
+                    >
                         <div className="p-4 border-b border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
                           <p className="text-xs font-black uppercase tracking-widest text-black/40 dark:text-white/40 mb-1">Signed in as</p>
                           <p className="text-sm font-bold truncate">{user.name}</p>
@@ -158,8 +166,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                             Logout
                           </button>
                         </div>
-                      </motion.div>
-                    </>
+                    </motion.div>
                   )}
                 </AnimatePresence>
               </div>
