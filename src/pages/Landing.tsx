@@ -14,6 +14,8 @@ interface LandingProps {
 
 const Landing: React.FC<LandingProps> = ({ error, renderCustomLogin }) => {
   const [regEmail, setRegEmail] = useState('');
+  const [regName, setRegName] = useState('');
+  const [regMethod, setRegMethod] = useState('');
   const [showQRIS, setShowQRIS] = useState(false);
 
   useEffect(() => {
@@ -24,9 +26,16 @@ const Landing: React.FC<LandingProps> = ({ error, renderCustomLogin }) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  const isEmailReady = isValidEmail(regEmail);
+  const isFormReady = isValidEmail(regEmail) && regName.trim() !== '' && regMethod !== '';
 
-  const waLink = `https://wa.me/6281330763633?text=Halo%20Admin%2C%20saya%20sudah%20melakukan%20pembayaran%20via%20QRIS%20untuk%20KelasWeb.%20Mohon%20aktifkan%20akses%20untuk%20email%3A%20${encodeURIComponent(regEmail)}`;
+  const waMessage = `Halo Admin KelasWeb! Saya ingin mengaktifkan akses dengan detail berikut:
+Nama: ${regName}
+Email: ${regEmail}
+Metode: ${regMethod}
+
+*Saya telah melampirkan screenshot bukti transfer pada chat ini.*`;
+
+  const waLink = `https://wa.me/6281330763633?text=${encodeURIComponent(waMessage)}`;
 
   const features = [
     { icon: <Zap size={20} />, title: "Kurikulum 2026", desc: "Materi terbaru fokus pada AI & Modern Dev." },
@@ -123,8 +132,9 @@ const Landing: React.FC<LandingProps> = ({ error, renderCustomLogin }) => {
                     <button onClick={() => setShowQRIS(!showQRIS)} className="py-4 rounded-xl bg-black/5 dark:bg-white/5 text-[10px] font-black uppercase tracking-widest hover:bg-black/10 transition-all">
                       {showQRIS ? 'Tutup QRIS' : '1. Lihat QRIS'}
                     </button>
-                    <a href={isEmailReady ? waLink : '#'} target="_blank" rel="noopener noreferrer" className={`py-4 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all ${isEmailReady ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'bg-black/10 opacity-50 cursor-not-allowed'}`}>
-                      2. Konfirmasi WA
+                    <a href={isFormReady ? waLink : '#'} target="_blank" rel="noopener noreferrer" className={`py-4 rounded-xl flex flex-col items-center justify-center transition-all ${isFormReady ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'bg-black/10 opacity-50 cursor-not-allowed'}`}>
+                      <span className="text-[10px] font-black uppercase tracking-widest">2. Konfirmasi WA</span>
+                      {isFormReady && <span className="text-[8px] mt-1 opacity-80">*Jangan lupa lampirkan bukti transfer</span>}
                     </a>
                   </div>
                   <AnimatePresence>
@@ -135,13 +145,34 @@ const Landing: React.FC<LandingProps> = ({ error, renderCustomLogin }) => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                  <input 
-                    type="email" 
-                    value={regEmail} 
-                    onChange={(e) => setRegEmail(e.target.value)} 
-                    placeholder="Email yang akan didaftarkan" 
-                    className="w-full bg-black/5 dark:bg-white/5 border-none rounded-2xl px-6 py-4 text-sm text-center font-bold"
-                  />
+                  
+                  <div className="space-y-3">
+                    <input 
+                      type="text" 
+                      value={regName} 
+                      onChange={(e) => setRegName(e.target.value)} 
+                      placeholder="Nama Lengkap" 
+                      className="w-full bg-black/5 dark:bg-white/5 border-none rounded-xl px-5 py-4 text-sm font-bold focus:ring-2 ring-blue-500 outline-none transition-all"
+                    />
+                    <input 
+                      type="email" 
+                      value={regEmail} 
+                      onChange={(e) => setRegEmail(e.target.value)} 
+                      placeholder="Email Google (GMAIL)" 
+                      className="w-full bg-black/5 dark:bg-white/5 border-none rounded-xl px-5 py-4 text-sm font-bold focus:ring-2 ring-blue-500 outline-none transition-all"
+                    />
+                    <select
+                      value={regMethod}
+                      onChange={(e) => setRegMethod(e.target.value)}
+                      className="w-full bg-black/5 dark:bg-white/5 border-none rounded-xl px-5 py-4 text-sm font-bold focus:ring-2 ring-blue-500 outline-none transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled>Pilih Metode Pembayaran</option>
+                      <option value="QRIS">Scan QRIS</option>
+                      <option value="BCA">Transfer Bank BCA</option>
+                      <option value="Mandiri">Transfer Bank Mandiri</option>
+                      <option value="E-Wallet">E-Wallet (Gopay / OVO / Dana)</option>
+                    </select>
+                  </div>
                 </div>
               )}
 
