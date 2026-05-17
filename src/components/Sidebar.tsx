@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ChevronRight, CheckCircle2, X, ChevronDown, Home, LogOut, Lock } from 'lucide-react';
+import { ChevronRight, CheckCircle2, X, ChevronDown, Home, Lock } from 'lucide-react';
 import { useMaterials } from '../hooks/useMaterials';
 import { useProgress } from '../context/ProgressContext';
 import { useAuth } from '../hooks/useAuth';
@@ -21,7 +21,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
   const { moduls } = useMaterials();
   const { progress } = useProgress();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
   
   const [expandedModul, setExpandedModul] = useState<number | null>(null);

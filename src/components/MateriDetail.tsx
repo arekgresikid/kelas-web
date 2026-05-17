@@ -10,7 +10,7 @@ import 'highlight.js/styles/github-dark.css';
 import { useProgress } from '../context/ProgressContext';
 import CodePlayground from './CodePlayground';
 import Mermaid from './Mermaid';
-import QuizEngine, { type QuizQuestion } from './QuizEngine';
+import QuizEngine from './QuizEngine';
 
 interface MateriDetailProps {
   materi: Materi;
@@ -176,7 +176,7 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
                   explanation: "Tailwind adalah salah satu framework CSS yang sangat populer untuk memberikan gaya pada HTML dengan pendekatan utility-first."
                 }
               ]}
-              onComplete={(score, passed) => {
+              onComplete={(_, passed) => {
                 if (passed) {
                   // Auto-check all Knowledge Checks if passed!
                   const allProgress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');

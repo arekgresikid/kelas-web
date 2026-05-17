@@ -3,12 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Search, Command, BookOpen, X } from 'lucide-react';
 import { useMaterials } from '../hooks/useMaterials';
 import { motion, AnimatePresence } from 'framer-motion';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 interface SearchResult {
   type: 'materi' | 'submateri';

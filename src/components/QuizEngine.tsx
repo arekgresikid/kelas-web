@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CheckCircle2, XCircle, AlertCircle, RefreshCw, Trophy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -19,7 +19,7 @@ interface QuizEngineProps {
 }
 
 export default function QuizEngine({ 
-  quizId, 
+  quizId: _quizId, 
   title = "Evaluasi Pemahaman", 
   questions, 
   onComplete,
