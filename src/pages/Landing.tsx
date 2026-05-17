@@ -47,7 +47,7 @@ Metode: ${regMethod}
   ];
 
   const showcases = [
-    { icon: <Layout size={16} />, title: "Portfolio Tanpa harus paham Coding", desc: "Bangun personal brand profesional dalam hitungan menit.", link: "https://ariftirtana.my.id" },
+    { icon: <Layout size={16} />, title: "Portfolio Tanpa harus paham Coding", desc: "Bangun personal brand profesional dalam hitungan menit. seperti https://ariftirtana.my.id ", link: "https://ariftirtana.my.id" },
     { icon: <ShoppingCart size={16} />, title: "Toko Online Sederhana", desc: "Solusi e-commerce praktis seperti martabakgresik.my.id", link: "https://martabakgresik.my.id" },
     { icon: <Globe size={16} />, title: "Web AI Generator", desc: "Buat tool gambar & teks otomatis seperti ruangriung.my.id", link: "https://ruangriung.my.id" },
     { icon: <Activity size={16} />, title: "Platform Kesehatan", desc: "Web konsultasi & tracking nutrisi seperti nutrilife-ai.pages.dev", link: "https://nutrilife-ai.pages.dev/" },
