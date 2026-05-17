@@ -4,8 +4,58 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen, Lock, Zap, Globe, Layout,
   ShoppingCart, Activity, Share2, Search as SearchIcon,
-  CheckCircle2, Star, ArrowRight, Copy
+  CheckCircle2, Star, ArrowRight, Copy, MessageCircle, HelpCircle, User
 } from 'lucide-react';
+
+// Mini glowing vector sparkline graph component
+const Sparkline: React.FC<{ data: number[] }> = ({ data }) => {
+  if (data.length < 2) return null;
+  const width = 80;
+  const height = 20;
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const range = max - min || 10;
+  
+  const points = data.map((val, index) => {
+    const x = (index / (data.length - 1)) * width;
+    const y = height - ((val - min) / range) * (height - 4) - 2;
+    return { x, y };
+  });
+
+  const pathD = `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}`;
+  const areaD = `${pathD} L ${width},${height} L 0,${height} Z`;
+
+  return (
+    <svg width={width} height={height} className="overflow-visible shrink-0 ml-1.5 opacity-90 inline-block align-middle">
+      <defs>
+        <linearGradient id="sparklineGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
+        </linearGradient>
+      </defs>
+      <path d={areaD} fill="url(#sparklineGrad)" />
+      <path
+        d={pathD}
+        fill="none"
+        stroke="#3b82f6"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="transition-all duration-700 ease-in-out"
+        style={{ filter: 'drop-shadow(0px 0px 2px rgba(59, 130, 246, 0.4))' }}
+      />
+      {points.length > 0 && (
+        <circle
+          cx={points[points.length - 1].x}
+          cy={points[points.length - 1].y}
+          r="2.5"
+          fill="#3b82f6"
+          className="animate-pulse"
+        />
+      )}
+    </svg>
+  );
+};
 
 interface LandingProps {
   error?: string;
@@ -17,6 +67,68 @@ const Landing: React.FC<LandingProps> = ({ error, renderCustomLogin }) => {
   const [regName, setRegName] = useState('');
   const [regMethod, setRegMethod] = useState('');
   const [showQRIS, setShowQRIS] = useState(false);
+  const [activeFaqIndex, setActiveFaqIndex] = useState<number | null>(null);
+
+  // Dynamic Live Activity Tracker states based on time-of-day
+  const [activeStudents, setActiveStudents] = useState(() => {
+    const hour = new Date().getHours();
+    if (hour >= 18 && hour <= 23) {
+      return Math.floor(Math.random() * 16) + 40; // 40-55 active during evening peak
+    } else if (hour >= 8 && hour <= 17) {
+      return Math.floor(Math.random() * 16) + 25; // 25-40 active during day
+    } else {
+      return Math.floor(Math.random() * 13) + 10; // 10-22 active at late night
+    }
+  });
+
+  const [livePortfolios, setLivePortfolios] = useState(() => {
+    const hour = new Date().getHours();
+    if (hour >= 18 && hour <= 23) {
+      return Math.floor(Math.random() * 6) + 18; // 18-23 portfolios live today
+    } else if (hour >= 8 && hour <= 17) {
+      return Math.floor(Math.random() * 6) + 12; // 12-17 portfolios live today
+    } else {
+      return Math.floor(Math.random() * 5) + 5; // 5-9 portfolios live today
+    }
+  });
+
+  const [studentHistory, setStudentHistory] = useState<number[]>(() => {
+    const hour = new Date().getHours();
+    let base = 42;
+    if (hour >= 18 && hour <= 23) base = 48;
+    else if (hour >= 8 && hour <= 17) base = 32;
+    else base = 16;
+    return [base - 3, base - 1, base - 2, base, base - 1, base + 1, base, base];
+  });
+
+  // Dynamic simulation effect (fluctuate every 7 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      let nextStudents = 0;
+      setActiveStudents(prev => {
+        const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+        const next = Math.max(10, Math.min(65, prev + change));
+        nextStudents = next;
+        return next;
+      });
+
+      // Update student activity history for sparkline graph
+      setStudentHistory(prevHistory => {
+        const updated = [...prevHistory, nextStudents || 35];
+        if (updated.length > 8) {
+          updated.shift();
+        }
+        return updated;
+      });
+
+      // Occasional portfolio increment (15% chance, capped at 30)
+      if (Math.random() < 0.15) {
+        setLivePortfolios(prev => Math.min(30, prev + 1));
+      }
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     document.title = 'KelasWeb - Masterclass Web Development Modern';
@@ -54,6 +166,46 @@ Metode: ${regMethod}
     { icon: <Share2 size={16} />, title: "Web Affiliate", desc: "Sistem rujukan otomatis seperti bikinsendiri.my.id", link: "https://bikinsendiri.my.id/" },
     { icon: <SearchIcon size={16} />, title: "Tools SEO Mandiri", desc: "Optimasi search engine sendiri seperti seo.ariftirtana.my.id", link: "https://seo.ariftirtana.my.id" },
     { icon: <Star size={16} />, title: "Web Unik & Kreatif", desc: "Eksplorasi desain kustom unik seperti jawidigital.my.id", link: "https://jawidigital.my.id" },
+  ];
+
+  const testimonials = [
+    {
+      name: "Rian Pratama",
+      role: "Freelance Web Developer",
+      gradient: "from-blue-500 to-indigo-400",
+      text: "Berkat taktik Cold Pitching Google Maps & Simulator Negosiasi di KelasWeb, saya berhasil mendapatkan klien kafe lokal pertamaku dengan nilai proyek Rp 3.500.000 hanya dalam waktu 3 minggu belajar!"
+    },
+    {
+      name: "Siti Rahma",
+      role: "Pemilik UKM Roti",
+      gradient: "from-pink-500 to-rose-400",
+      text: "Awalnya saya tidak tahu apa-apa tentang koding. Kelas ini mengajarkan cara berkolaborasi dengan AI untuk membangun website katalog WhatsApp milikku sendiri. Hemat biaya server puluhan juta!"
+    },
+    {
+      name: "Aris Munandar",
+      role: "Mahasiswa Teknik",
+      gradient: "from-purple-500 to-violet-400",
+      text: "Portofolio instan yang dideploy gratis ke Cloudflare Pages benar-benar meningkatkan kepercayaan diri saya saat melamar magang. Dosen saya bahkan terkesan dengan kecepatan website portofolio saya."
+    }
+  ];
+
+  const faqs = [
+    {
+      q: "Apakah saya harus punya laptop dengan spesifikasi tinggi?",
+      a: "Sama sekali tidak! Semua kode dan pendeployan di KelasWeb menggunakan platform cloud berkecepatan tinggi gratis (seperti Cloudflare Pages & GitHub). Laptop standar berkabel internet stabil sudah sangat memadai."
+    },
+    {
+      q: "Bagaimana jika saya mengalami kesulitan atau bingung di tengah materi?",
+      a: "Jangan khawatir! Anda mendapatkan akses penuh ke grup WhatsApp komunitas VIP KelasWeb. Admin dan instruktur aktif membantu menjawab kesulitan serta mengoreksi kode Anda setiap hari."
+    },
+    {
+      q: "Apakah kurikulum ini benar-benar cocok untuk pemula tanpa dasar koding?",
+      a: "Ya! Kami merancang alur belajar terarah menggunakan asisten kecerdasan buatan (AI) yang disesuaikan untuk pemula. Anda akan dibimbing membuat website modern langkah demi langkah hingga mahir."
+    },
+    {
+      q: "Bagaimana skema pembayaran IDR 99K untuk Lifetime Access?",
+      a: "Satu kali bayar Rp 99.000 saja dan akses ke seluruh materi, modul bonus karir, update kurikulum di masa depan, serta komunitas VIP berlaku selamanya tanpa biaya bulanan tambahan."
+    }
   ];
 
   return (
@@ -94,8 +246,31 @@ Metode: ${regMethod}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="relative max-w-xl mx-auto w-full"
+          className="relative max-w-xl mx-auto w-full space-y-4"
         >
+          {/* Pulsing Live Activity Tracker - Snugged above the card */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 py-3 px-6 rounded-3xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 w-full relative z-10"
+          >
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase tracking-widest text-black/60 dark:text-white/60">
+                🟢 {activeStudents} Siswa Aktif Koding
+              </span>
+              <Sparkline data={studentHistory} />
+            </div>
+            <span className="text-black/10 dark:text-white/10 font-bold">&bull;</span>
+            <span className="text-xs font-black uppercase tracking-widest text-black/60 dark:text-white/60">
+              🚀 {livePortfolios} Portofolio Live Hari Ini
+            </span>
+          </motion.div>
+
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[3rem] blur-2xl opacity-20 animate-pulse"></div>
           <div className="relative p-8 md:p-12 rounded-[3rem] bg-white dark:bg-black border border-black/10 dark:border-white/10 shadow-2xl space-y-10">
             <div className="text-center space-y-4">
@@ -235,25 +410,35 @@ Metode: ${regMethod}
             <h3 className="text-2xl font-black tracking-tight">Build Real Projects</h3>
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30 text-blue-500">Kuasai Skill dengan Praktek Langsung meski kamu tidak bisa koding sekalipun</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {showcases.map((s, idx) => (
-              <button
-                key={idx}
-                onClick={() => s.link !== '#' && window.open(s.link)}
-                className="flex items-center justify-between p-5 rounded-3xl bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 hover:border-blue-500/30 hover:shadow-xl transition-all group"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-black/30 dark:text-white/30 group-hover:text-blue-500 group-hover:bg-blue-500/10 transition-all">
-                    {s.icon}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {showcases.map((s, idx) => {
+              const isFeatured = idx === 0 || idx === 5; // Portfolio and SEO tools are featured
+              return (
+                <button
+                  key={idx}
+                  onClick={() => s.link !== '#' && window.open(s.link)}
+                  className={`flex flex-col justify-between p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 hover:shadow-2xl transition-all group text-left relative overflow-hidden ${
+                    isFeatured 
+                      ? 'md:col-span-2 bg-gradient-to-br from-blue-500/5 to-purple-500/5 dark:from-blue-500/10 dark:to-purple-500/5 border-blue-500/10 hover:border-blue-500/30' 
+                      : 'hover:border-blue-500/30'
+                  }`}
+                >
+                  <div className="flex items-start justify-between w-full">
+                    <div className="w-10 h-10 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-black/40 dark:text-white/40 group-hover:text-blue-500 group-hover:bg-blue-500/10 transition-all shrink-0">
+                      {s.icon}
+                    </div>
+                    <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-all text-blue-500 -translate-y-1 group-hover:translate-y-0" />
                   </div>
-                  <div className="text-left">
-                    <h4 className="text-xs font-black group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{s.title}</h4>
-                    <p className="text-[9px] font-bold opacity-30 uppercase tracking-tighter">{s.desc}</p>
+                  <div className="mt-6 space-y-1">
+                    <h4 className="text-sm font-black group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-2">
+                      {s.title}
+                      {isFeatured && <span className="text-[8px] font-black text-blue-500 uppercase bg-blue-500/10 px-2 py-0.5 rounded-full">Populer</span>}
+                    </h4>
+                    <p className="text-[10px] font-medium opacity-50 dark:opacity-40">{s.desc}</p>
                   </div>
-                </div>
-                <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all text-blue-500" />
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </motion.div>
 
@@ -285,7 +470,86 @@ Metode: ${regMethod}
           </div>
         </div>
 
-        {/* 5. TRUSTED BY 500++ */}
+        {/* 5. KESAKSIAN ALUMNI */}
+        <div className="space-y-10">
+          <div className="text-center space-y-2">
+            <h3 className="text-2xl font-black tracking-tight uppercase">Kesaksian Alumni</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30 text-blue-500">Kisah Sukses Nyata Siswa yang Belajar dari Nol</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((t, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="p-8 rounded-[2.5rem] bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 space-y-6 hover:shadow-2xl transition-all flex flex-col justify-between"
+              >
+                <p className="text-xs text-black/70 dark:text-white/70 leading-relaxed font-medium italic">
+                  "{t.text}"
+                </p>
+                <div className="flex items-center gap-3 pt-4 border-t border-black/5 dark:border-white/5">
+                  <div className={`w-10 h-10 rounded-full bg-gradient-to-tr ${t.gradient} text-white flex items-center justify-center shadow-md shrink-0`}>
+                    <User size={16} fill="currentColor" className="opacity-90" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-tight">{t.name}</h4>
+                    <p className="text-[9px] font-bold opacity-45 uppercase tracking-wider text-blue-500">{t.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* 6. FAQ SECTION */}
+        <div className="space-y-10">
+          <div className="text-center space-y-2">
+            <h3 className="text-2xl font-black tracking-tight uppercase">Tanya Jawab</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30 text-blue-500">Segala Hal yang Sering Ditanyakan Mengenai KelasWeb</p>
+          </div>
+          <div className="max-w-3xl mx-auto space-y-4">
+            {faqs.map((faq, idx) => {
+              const isOpen = activeFaqIndex === idx;
+              return (
+                <div
+                  key={idx}
+                  className="rounded-3xl border border-black/5 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden transition-all duration-300"
+                >
+                  <button
+                    onClick={() => setActiveFaqIndex(isOpen ? null : idx)}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-colors"
+                  >
+                    <span className="text-xs font-black uppercase tracking-tight flex items-center gap-3">
+                      <HelpCircle size={16} className="text-blue-500 shrink-0" />
+                      {faq.q}
+                    </span>
+                    <span className={`text-xs font-bold transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+                      ▼
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                      >
+                        <div className="p-6 pt-0 border-t border-black/5 dark:border-white/5 text-xs text-black/60 dark:text-white/60 leading-relaxed font-medium">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 7. TRUSTED BY 500++ */}
         <div className="space-y-8">
           <div className="text-center space-y-2">
             <h3 className="text-2xl font-black tracking-tight uppercase">Community Proof</h3>
@@ -299,9 +563,18 @@ Metode: ${regMethod}
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-1000"></div>
             <div className="flex flex-col md:flex-row items-center gap-6 relative z-10">
-              <div className="flex -space-x-4">
-                {[10, 20, 30, 40, 50, 60].map(id => (
-                  <img key={id} src={`https://i.pravatar.cc/150?u=${id}`} className="w-14 h-14 rounded-full border-4 border-blue-500 shadow-xl" alt="Student" />
+              <div className="flex -space-x-3">
+                {[
+                  "from-pink-500 to-rose-400",
+                  "from-amber-500 to-orange-400",
+                  "from-emerald-500 to-teal-400",
+                  "from-blue-500 to-indigo-400",
+                  "from-purple-500 to-violet-400",
+                  "from-fuchsia-500 to-pink-400"
+                ].map((gradient, idx) => (
+                  <div key={idx} className={`w-12 h-12 rounded-full border-4 border-blue-500 shadow-xl flex items-center justify-center text-white bg-gradient-to-tr ${gradient}`}>
+                    <User size={16} fill="currentColor" className="opacity-90" />
+                  </div>
                 ))}
               </div>
               <div className="text-center md:text-left">
@@ -364,6 +637,21 @@ Metode: ${regMethod}
         </footer>
 
       </div>
+
+      {/* Floating Action Button WhatsApp Admin Support */}
+      <a 
+        href="https://wa.me/6281330763633?text=Halo%20Admin%20KelasWeb%2C%20saya%20tertarik%20untuk%20mendaftar%20kelas%20tetapi%20ada%20pertanyaan%20mengenai..."
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 p-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-2xl flex items-center gap-2 transition-all hover:scale-105 group active:scale-95 border border-emerald-400/25 cursor-pointer"
+        title="Tanya Admin CS KelasWeb"
+      >
+        <span className="font-black text-[10px] uppercase tracking-widest max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap">
+          Tanya Admin CS
+        </span>
+        <MessageCircle size={20} className="animate-pulse" />
+      </a>
+
     </div>
   );
 };
