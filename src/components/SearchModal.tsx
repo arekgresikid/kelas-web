@@ -1,8 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Search, Command, BookOpen, X } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Search, Command, BookOpen, X } from 'lucide-react';
 import { useMaterials } from '../hooks/useMaterials';
 import { motion, AnimatePresence } from 'framer-motion';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 interface SearchResult {
   type: 'materi' | 'submateri';
@@ -12,14 +18,14 @@ interface SearchResult {
   hash?: string;
 }
 
-const SearchBar: React.FC = () => {
+export default function SearchModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const { allMateri } = useMaterials();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Handle Cmd+K / Ctrl+K and custom event
+  // Handle Cmd+K / Ctrl+K
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -30,16 +36,8 @@ const SearchBar: React.FC = () => {
         setIsOpen(false);
       }
     };
-    
-    const handleCustomOpen = () => setIsOpen(true);
-
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('open-search', handleCustomOpen);
-    
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('open-search', handleCustomOpen);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
   useEffect(() => {
@@ -58,7 +56,7 @@ const SearchBar: React.FC = () => {
     const q = query.toLowerCase();
     allMateri.forEach((m) => {
       // Search in main material title
-      if (m.frontmatter.title.toLowerCase().includes(q) || m.content.toLowerCase().includes(q)) {
+      if (m.frontmatter.title.toLowerCase().includes(q)) {
         results.push({
           type: 'materi',
           modulId: m.frontmatter.modul,
@@ -91,13 +89,11 @@ const SearchBar: React.FC = () => {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center w-full justify-between px-4 py-2 text-sm text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-all border border-transparent hover:border-black/10 dark:hover:border-white/10 group"
+        className="flex items-center gap-2 px-3 py-2 text-sm text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 rounded-xl transition-all border border-transparent hover:border-black/10 dark:hover:border-white/10"
       >
-        <div className="flex items-center gap-3">
-          <Search size={16} className="text-black/40 dark:text-white/40 group-hover:text-black dark:group-hover:text-white" />
-          <span className="font-medium">Cari Materi...</span>
-        </div>
-        <div className="hidden md:flex items-center gap-1 opacity-50 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded-md">
+        <Search size={16} />
+        <span className="hidden md:inline font-medium">Cari Materi...</span>
+        <div className="hidden md:flex items-center gap-1 opacity-50 ml-2">
           <Command size={12} />
           <span className="text-[10px] font-bold">K</span>
         </div>
@@ -151,14 +147,13 @@ const SearchBar: React.FC = () => {
                   </div>
                 ) : (
                   <div className="space-y-1">
-                    {/* Filter out duplicates by key */}
-                    {Array.from(new Map(results.map(item => [item.slug + item.hash, item])).values()).slice(0, 15).map((result, i) => (
+                    {results.slice(0, 15).map((result, i) => (
                       <button
                         key={`${result.slug}-${result.hash || 'main'}-${i}`}
                         onClick={() => handleSelect(result.slug, result.hash)}
                         className="w-full text-left flex items-start gap-4 p-4 hover:bg-black/5 dark:hover:bg-white/5 rounded-2xl transition-colors group"
                       >
-                        <div className="mt-1 p-2 bg-black/5 dark:bg-white/5 rounded-lg text-black/50 dark:text-white/50 group-hover:text-black dark:group-hover:text-white group-hover:bg-black/10 dark:group-hover:bg-white/10 transition-colors shrink-0">
+                        <div className="mt-1 p-2 bg-black/5 dark:bg-white/5 rounded-lg text-black/50 dark:text-white/50 group-hover:text-black dark:group-hover:text-white group-hover:bg-black/10 dark:group-hover:bg-white/10 transition-colors">
                           <BookOpen size={16} />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -195,6 +190,4 @@ const SearchBar: React.FC = () => {
       </AnimatePresence>
     </>
   );
-};
-
-export default SearchBar;
+}

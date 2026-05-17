@@ -10,6 +10,7 @@ import 'highlight.js/styles/github-dark.css';
 import { useProgress } from '../context/ProgressContext';
 import CodePlayground from './CodePlayground';
 import Mermaid from './Mermaid';
+import QuizEngine, { type QuizQuestion } from './QuizEngine';
 
 interface MateriDetailProps {
   materi: Materi;
@@ -143,6 +144,55 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
         </div>
 
         {isFrontendModul && <CodePlayground />}
+
+        {materi.slug === '1.1-pengenalan-web-development' && (
+          <div className="mt-16">
+            <QuizEngine 
+              quizId="quiz-1.1"
+              title="Kuis: Fundamental Web"
+              questions={[
+                {
+                  id: "q1",
+                  question: "Apa fungsi utama dari HTML dalam pengembangan web?",
+                  options: [
+                    "Memberikan gaya dan warna pada halaman",
+                    "Membuat halaman menjadi interaktif",
+                    "Memberikan struktur dasar dan kerangka konten",
+                    "Menyimpan data di dalam database"
+                  ],
+                  correctAnswerIndex: 2,
+                  explanation: "HTML (HyperText Markup Language) berfungsi sebagai kerangka dasar atau tulang punggung dari sebuah halaman web."
+                },
+                {
+                  id: "q2",
+                  question: "Manakah dari berikut ini yang merupakan bahasa untuk Styling (CSS)?",
+                  options: [
+                    "Tailwind",
+                    "React",
+                    "Node.js",
+                    "PostgreSQL"
+                  ],
+                  correctAnswerIndex: 0,
+                  explanation: "Tailwind adalah salah satu framework CSS yang sangat populer untuk memberikan gaya pada HTML dengan pendekatan utility-first."
+                }
+              ]}
+              onComplete={(score, passed) => {
+                if (passed) {
+                  // Auto-check all Knowledge Checks if passed!
+                  const allProgress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
+                  const currentMateriProgress = { ...subProgress };
+                  materi.subMateri.forEach(s => currentMateriProgress[s.id] = true);
+                  
+                  allProgress[materi.slug] = currentMateriProgress;
+                  localStorage.setItem('sub_materi_progress', JSON.stringify(allProgress));
+                  setSubProgress(currentMateriProgress);
+                  toggleProgress(materi.slug, true);
+                  window.dispatchEvent(new Event('storage'));
+                }
+              }}
+            />
+          </div>
+        )}
 
         {/* Knowledge Check Section */}
         <div className="mt-20 p-8 rounded-3xl bg-black/5 dark:bg-white/5 border border-black dark:border-white space-y-6">

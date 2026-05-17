@@ -5,7 +5,6 @@ import {
 } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
 import SearchBar from './SearchBar';
-import SearchOverlay from './SearchOverlay';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,7 +17,6 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { logout, user } = useAuth();
   const [showResetModal, setShowResetModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const location = useLocation();
 
@@ -65,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <button 
-              onClick={() => setIsSearchOpen(true)}
+              onClick={() => window.dispatchEvent(new Event('open-search'))}
               className="md:hidden p-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-lg transition-colors"
               title="Cari Materi"
             >
@@ -236,11 +234,6 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <SearchOverlay 
-        isOpen={isSearchOpen} 
-        onClose={() => setIsSearchOpen(false)} 
-      />
     </>
   );
 };
