@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ChevronRight, CheckCircle2, X, ChevronDown, Home, Lock } from 'lucide-react';
+import { ChevronRight, CheckCircle2, X, ChevronDown, Home, Lock, Briefcase, Sparkles } from 'lucide-react';
 import { useMaterials } from '../hooks/useMaterials';
 import { useProgress } from '../context/ProgressContext';
 import { useAuth } from '../hooks/useAuth';
@@ -203,27 +203,57 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick, isOpen, onClose }) => {
                     className="overflow-hidden"
                   >
                     <div className="mt-1 ml-4 pl-4 border-l border-black/10 dark:border-white/10 space-y-1 py-1">
-                      {modul.materi.map((m) => (
-                        <NavLink
-                          key={m.slug}
-                          to={`/materi/${m.slug}`}
-                          onClick={onItemClick}
-                          className={({ isActive }) => cn(
-                            "group flex items-start justify-between px-3 py-2 text-xs font-medium rounded-lg transition-all",
-                            isActive 
-                              ? "text-black dark:text-white font-bold" 
-                              : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
-                          )}
-                        >
-                          <span className="leading-snug break-words">{m.frontmatter.title}</span>
-                          <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                            {isMateriRead(m.slug) && (
-                              <CheckCircle2 size={12} className="text-green-500" />
+                      {modul.materi.map((m) => {
+                        const isBonus = m.frontmatter.isBonus === true;
+                        const isFirstProjectBonus = m.slug === 'bonus-proyek-pertama';
+                        const isActiveMateri = location.pathname === `/materi/${m.slug}`;
+                        
+                        let bonusStyles = "";
+                        if (isBonus) {
+                          if (isFirstProjectBonus) {
+                            bonusStyles = isActiveMateri
+                              ? "bg-gradient-to-r from-emerald-500 via-teal-500 to-teal-600 text-white font-black shadow-lg shadow-emerald-500/20 border border-emerald-400/30"
+                              : "text-emerald-700 dark:text-emerald-400 bg-emerald-500/5 dark:bg-emerald-500/10 border-emerald-500/20 dark:border-emerald-400/20 hover:bg-emerald-500/10 dark:hover:bg-emerald-500/20 font-semibold";
+                          } else {
+                            // Bawaan bonus Cloudflare (Amber)
+                            bonusStyles = isActiveMateri
+                              ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-black shadow-lg shadow-amber-500/20 border border-amber-400/30"
+                              : "text-amber-700 dark:text-amber-400 bg-amber-500/5 dark:bg-amber-500/10 border-amber-500/20 dark:border-amber-400/20 hover:bg-amber-500/10 dark:hover:bg-amber-500/20 font-semibold";
+                          }
+                        }
+
+                        return (
+                          <NavLink
+                            key={m.slug}
+                            to={`/materi/${m.slug}`}
+                            onClick={onItemClick}
+                            className={cn(
+                              "group flex items-start justify-between px-3 py-2 text-xs font-medium rounded-lg transition-all border border-transparent w-full",
+                              isBonus
+                                ? bonusStyles
+                                : (isActiveMateri 
+                                    ? "text-black dark:text-white font-bold" 
+                                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white")
                             )}
-                            <ChevronRight size={12} className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
-                          </div>
-                        </NavLink>
-                      ))}
+                          >
+                            <span className="leading-snug break-words">{m.frontmatter.title}</span>
+                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                              {isMateriRead(m.slug) && (
+                                <CheckCircle2 size={12} className="text-green-500" />
+                              )}
+                              {isBonus ? (
+                                isFirstProjectBonus ? (
+                                  <Briefcase size={12} className={cn("text-emerald-500 dark:text-emerald-400 animate-bounce flex-shrink-0", isActiveMateri ? "text-white" : "")} />
+                                ) : (
+                                  <Sparkles size={12} className={cn("text-amber-500 dark:text-amber-400 animate-pulse flex-shrink-0", isActiveMateri ? "text-white" : "")} />
+                                )
+                              ) : (
+                                <ChevronRight size={12} className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1 flex-shrink-0" />
+                              )}
+                            </div>
+                          </NavLink>
+                        );
+                      })}
                     </div>
                   </motion.div>
                 )}

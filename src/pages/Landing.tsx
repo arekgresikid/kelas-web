@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  BookOpen, Lock, Zap, Globe, Layout, 
-  ShoppingCart, Activity, Share2, Search as SearchIcon, 
+import {
+  BookOpen, Lock, Zap, Globe, Layout,
+  ShoppingCart, Activity, Share2, Search as SearchIcon,
   CheckCircle2, Star, ArrowRight, Copy
 } from 'lucide-react';
 
@@ -19,7 +19,7 @@ const Landing: React.FC<LandingProps> = ({ error, renderCustomLogin }) => {
   const [showQRIS, setShowQRIS] = useState(false);
 
   useEffect(() => {
-    document.title = 'KelasWeb Indonesia - Pendaftaran';
+    document.title = 'KelasWeb - Masterclass Web Development Modern';
   }, []);
 
   const isValidEmail = (email: string) => {
@@ -41,13 +41,13 @@ Metode: ${regMethod}
     { icon: <Zap size={20} />, title: "Kurikulum 2026", desc: "Materi terbaru fokus pada AI & Modern Dev." },
     { icon: <BookOpen size={20} />, title: "Project Based", desc: "Belajar sambil membangun produk nyata." },
     { icon: <Lock size={20} />, title: "Lifetime Access", desc: "Satu kali bayar untuk akses selamanya." },
-    { icon: <Activity size={20} />, title: "Expert Fullstack", desc: "Kuasai Next.js, Docker, & Arsitektur Microservices." },
-    { icon: <Globe size={20} />, title: "Cloud & DevOps", desc: "Pelajari CI/CD, GitHub Actions, dan AWS Cloud." },
-    { icon: <CheckCircle2 size={20} />, title: "Security & Testing", desc: "Pertahanan OWASP, Testing & Optimasi WPO." },
+    { icon: <Globe size={20} />, title: "Punya Portofolio Nyata", desc: "Kamu langsung memiliki website portofolio online aktif untuk dipamerkan ke calon klien." },
+    { icon: <Activity size={20} />, title: "Siap Terima Proyek", desc: "Kuasai taktik freelance & negosiasi harga lewat simulator interaktif untuk meraih pendapatan pertama." },
+    { icon: <CheckCircle2 size={20} />, title: "Bantuan AI Maksimal", desc: "Pelajari rahasia kolaborasi dengan AI untuk membangun website premium dengan kecepatan 10x lipat." },
   ];
 
   const showcases = [
-    { icon: <Layout size={16} />, title: "Portfolio Tanpa harus paham Coding", desc: "Bangun personal brand profesional dalam hitungan menit. seperti https://ariftirtana.my.id ", link: "https://ariftirtana.my.id" },
+    { icon: <Layout size={16} />, title: "Portfolio Tanpa harus paham Coding", desc: "Bangun personal brand profesional dalam hitungan menit seperti https://ariftirtana.my.id ", link: "https://ariftirtana.my.id" },
     { icon: <ShoppingCart size={16} />, title: "Toko Online Sederhana", desc: "Solusi e-commerce praktis seperti martabakgresik.my.id", link: "https://martabakgresik.my.id" },
     { icon: <Globe size={16} />, title: "Web AI Generator", desc: "Buat tool gambar & teks otomatis seperti ruangriung.my.id", link: "https://ruangriung.my.id" },
     { icon: <Activity size={16} />, title: "Platform Kesehatan", desc: "Web konsultasi & tracking nutrisi seperti nutrilife-ai.pages.dev", link: "https://nutrilife-ai.pages.dev/" },
@@ -65,9 +65,9 @@ Metode: ${regMethod}
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-8 lg:pt-12 space-y-20">
-        
+
         {/* 1. HERO SECTION */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="space-y-8 w-full text-center"
@@ -76,21 +76,21 @@ Metode: ${regMethod}
             <Star size={12} fill="currentColor" />
             <span>Pendaftaran Batch 2026 Dibuka</span>
           </div>
-          
+
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-black tracking-tightest leading-[0.98] w-full text-center">
-            Upgrade Skill, Ciptakan—<br/>
+            Upgrade Skill, Ciptakan—<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
               Ide Baru, Ubah Masa Depan.
             </span>
           </h1>
-          
+
           <p className="text-lg md:text-2xl text-black/60 dark:text-white/60 w-full leading-relaxed font-medium text-center max-w-4xl mx-auto">
             Wujudkan ide website impianmu dengan <span className='text-blue-600 dark:text-blue-400 font-bold'>bantuan AI</span>, kurikulum berbasis proyek nyata, dan dukungan komunitas—<span className='text-black dark:text-white font-bold'>meski kamu tidak paham koding sekalipun.</span>
           </p>
         </motion.div>
 
         {/* 2. LOGIN FORM CARD */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
@@ -110,9 +110,9 @@ Metode: ${regMethod}
 
             <div className="space-y-4">
               {renderCustomLogin}
-              
+
               {error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   className="p-5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs font-bold text-center"
@@ -149,20 +149,20 @@ Metode: ${regMethod}
                       </motion.div>
                     )}
                   </AnimatePresence>
-                  
+
                   <div className="space-y-3">
-                    <input 
-                      type="text" 
-                      value={regName} 
-                      onChange={(e) => setRegName(e.target.value)} 
-                      placeholder="Nama Lengkap" 
+                    <input
+                      type="text"
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      placeholder="Nama Lengkap"
                       className="w-full bg-black/5 dark:bg-white/5 border-none rounded-xl px-5 py-4 text-sm font-bold focus:ring-2 ring-blue-500 outline-none transition-all"
                     />
-                    <input 
-                      type="email" 
-                      value={regEmail} 
-                      onChange={(e) => setRegEmail(e.target.value)} 
-                      placeholder="Email Google (GMAIL)" 
+                    <input
+                      type="email"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      placeholder="Email Google (GMAIL)"
                       className="w-full bg-black/5 dark:bg-white/5 border-none rounded-xl px-5 py-4 text-sm font-bold focus:ring-2 ring-blue-500 outline-none transition-all"
                     />
                     <select
@@ -225,7 +225,7 @@ Metode: ${regMethod}
         </motion.div>
 
         {/* 3. BUILD REAL PROJECTS SECTION */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -237,7 +237,7 @@ Metode: ${regMethod}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {showcases.map((s, idx) => (
-              <button 
+              <button
                 key={idx}
                 onClick={() => s.link !== '#' && window.open(s.link)}
                 className="flex items-center justify-between p-5 rounded-3xl bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 hover:border-blue-500/30 hover:shadow-xl transition-all group"
@@ -260,12 +260,12 @@ Metode: ${regMethod}
         {/* 4. FEATURES GRID */}
         <div className="space-y-10">
           <div className="text-center space-y-2">
-            <h3 className="text-2xl font-black tracking-tight uppercase">Kenapa Pilih KelasWeb?</h3>
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30 text-blue-500">Kurikulum yang dirancang untuk kebutuhan industri masa depan</p>
+            <h3 className="text-2xl font-black tracking-tight uppercase">Keuntungan Belajar di KelasWeb</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30 text-blue-500">Hasil nyata dan keuntungan karir langsung setelah menyelesaikan materi</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {features.map((f, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -291,7 +291,7 @@ Metode: ${regMethod}
             <h3 className="text-2xl font-black tracking-tight uppercase">Community Proof</h3>
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30 text-blue-500">Bergabunglah dengan siswa yang telah memulai transformasi karir mereka</p>
           </div>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -306,9 +306,9 @@ Metode: ${regMethod}
               </div>
               <div className="text-center md:text-left">
                 <div className="flex items-center justify-center md:justify-start gap-1 mb-1">
-                  {[1,2,3,4,5].map(i => <Zap key={i} size={14} className="fill-white text-white" />)}
+                  {[1, 2, 3, 4, 5].map(i => <Zap key={i} size={14} className="fill-white text-white" />)}
                 </div>
-                <h4 className="text-xl font-black uppercase tracking-tighter italic">Dipercaya 500++ Mahasiswa</h4>
+                <h4 className="text-xl font-black uppercase tracking-tighter italic">Dipercaya 200++ UMKM</h4>
                 <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Wujudkan Portfolio Impian Bersama Kami</p>
               </div>
             </div>
@@ -317,7 +317,7 @@ Metode: ${regMethod}
         </div>
 
         {/* 6. POWERED & SUPPORTED BY */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -354,9 +354,9 @@ Metode: ${regMethod}
               <p className="text-[10px] font-black uppercase tracking-[0.5em] text-black/10 dark:text-white/10 italic text-center">
                 &copy; 2026 KELASWEB INDONESIA &bull; DESIGNED BY ANTIGRAVITY
               </p>
-              <img 
-                src="https://img.shields.io/badge/Built%20with-Pollinations-8a2be2?style=for-the-badge&logo=data:image/png;base64,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&logoColor=white&labelColor=6a0dad" 
-                alt="Built with Pollinations" 
+              <img
+                src="https://img.shields.io/badge/Built%20with-Pollinations-8a2be2?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAC61BMVEUAAAAdHR0AAAD+/v7X19cAAAD8/Pz+/v7+/v4AAAD+/v7+/v7+/v75+fn5+fn+/v7+/v7Jycn+/v7+/v7+/v77+/v+/v77+/v8/PwFBQXp6enR0dHOzs719fXW1tbu7u7+/v7+/v7+/v79/f3+/v7+/v78/Pz6+vr19fVzc3P9/f3R0dH+/v7o6OicnJwEBAQMDAzh4eHx8fH+/v7n5+f+/v7z8/PR0dH39/fX19fFxcWvr6/+/v7IyMjv7+/y8vKOjo5/f39hYWFoaGjx8fGJiYlCQkL+/v69vb13d3dAQEAxMTGoqKj9/f3X19cDAwP4+PgCAgK2traTk5MKCgr29vacnJwAAADx8fH19fXc3Nz9/f3FxcXy8vLAwMDJycnl5eXPz8/6+vrf39+5ubnx8fHt7e3+/v61tbX39/fAwMDR0dHe3t7BwcHQ0NCysrLW1tb09PT+/v6bm5vv7+/b29uysrKWlpaLi4vh4eGDg4PExMT+/v6rq6vn5+d8fHxycnL+/v76+vq8vLyvr6+JiYlnZ2fj4+Nubm7+/v7+/v7p6enX19epqamBgYG8vLydnZ3+/v7U1NRYWFiqqqqbm5svLy+fn5+RkZEpKSkKCgrz8/OsrKwcHByVlZVUVFT5+flKSkr19fXDw8Py8vLJycn4+Pj8/PywsLDg4ODb29vFxcXp6ene3t7r6+v29vbj4+PZ2dnS0tL09PTGxsbo6Ojg4OCvr6/Gxsbu7u7a2trn5+fExMSjo6O8vLz19fWNjY3e3t6srKzz8/PBwcHY2Nj19fW+vr6Pj4+goKCTk5O7u7u0tLTT09ORkZHe3t7CwsKDg4NsbGyurq5nZ2fOzs7GxsZlZWVcXFz+/v5UVFRUVFS8vLx5eXnY2NhYWFipqanX19dVVVXGxsampqZUVFRycnI6Ojr+/v4AAAD////8/Pz6+vr29vbt7e3q6urS0tLl5eX+/v7w8PD09PTy8vLc3Nzn5+fU1NTdRJUhAAAA6nRSTlMABhDJ3A72zYsJ8uWhJxX66+bc0b2Qd2U+KQn++/jw7sXBubCsppWJh2hROjYwJyEa/v38+O/t7Onp5t3VyMGckHRyYF1ZVkxLSEJAOi4mJSIgHBoTEhIMBvz6+Pb09PLw5N/e3Nra19bV1NLPxsXFxMO1sq6urqmloJuamZWUi4mAfnx1dHNycW9paWdmY2FgWVVVVEpIQjQzMSsrKCMfFhQN+/f38O/v7u3s6+fm5eLh3t3d1dPR0M7Kx8HAu7q4s7Oxraelo6OflouFgoJ/fn59e3t0bWlmXlpYVFBISEJAPDY0KignFxUg80hDAAADxUlEQVRIx92VVZhSQRiGf0BAQkEM0G3XddPu7u7u7u7u7u7u7u7u7u7u7u7W7xyEXfPSGc6RVRdW9lLfi3k+5uFl/pn5D4f+OTIsTbKSKahWEo0RwCFdkowHuDAZfZJi2NBeRwNwxXfjvblZNSJFUTz2WUnjqEiMWvmbvPXRmIDhUiiPrpQYxUJUKpU2JG1UCn0hBUn0wWxbeEYVI6R79oRKO3syRuAXmIRZJFNLo8Fn/xZsPsCRLaGSuiAfFe+m50WH+dLUSiM+DVtQm8dwh4dVtKnkYNiZM8jlZAj+3Mn+UppM/rFGQkUlKylwtbKwfQXvGZSMRomfiqfCZKUKitNdDCKagf4UgzGJKJaC8Qr1+LKMLGuyky1eqeF9laoYQvQCo1Pw2ymHSGk2reMD/UadqMxpGtktGZPb2KYbdSFS5O8eEZueKJ1QiWjRxEyp9dAarVXdwvLkZnwtGPS5YwE7LJOoZw4lu9iPTdrz1vGnmDQQ/Pevzd0pB4RTlWUlC5rNykYjxQX05tYWFB2AMkSlgYtEKXN1C4fzfEUlGfZR7QqdMZVkjq1eRvQUl1jUjRKBIqwYEz/eCAhxx1l9FINh/Oo26ci9TFdefnM1MSpvhTiH6uhxj1KuQ8OSxDE6lhCNRMlfWhLTiMbhMnGWtkUrxUo97lNm+JWVr7cXG3IV0sUrdbcFZCVFmwaLiZM1CNdJj7lV8FUySPV1CdVXxVaiX4gW29SlV8KumsR53iCgvEGIDBbHk4swjGW14Tb9xkx0qMqGltHEmYy8GnEz+kl3kIn1Q4YwDKQ/mCZqSlN0XqSt7rpsMFrzlHJino8lKKYwMxIwrxWCbYuH5tT0iJhQ2moC4s6Vs6YLNX85+iyFEX5jyQPqUc2RJ6wtXMQBgpQ2nG2H2F4LyTPq6aeTbSyQL1WXvkNMAPoOOty5QGBgvm430lNi1FMrFawd7blz5yzKf0XJPvpAyrTo3zvfaBzIQj5Qxzq4Z7BJ6Eeh3+mOiMKhg0f8xZuRB9+cjY88Ym3vVFOFk42d34ChiZVmRetS1ZRqHjM6lXxnympPiuCEd6N6ro5KKUmKzBlM8SLIj61MqJ+7bVdoinh9PYZ8yipH3rfx2ZLjtZeyCguiprx8zFpBCJjtzqLdc2lhjlJzzDuk08n8qdQ8Q6C0m+Ti+AotG9b2pBh2Exljpa+lbsE1qbG0fmyXcXM9Kb0xKernqyUc46LM69WuHIFr5QxNs3tSau4BmlaU815gVVn5KT8I+D/00pFlIt1/vLoyke72VUy9mZ7+T34APOliYxzwd1sAAAAASUVORK5CYII=&logoColor=white&labelColor=6a0dad"
+                alt="Built with Pollinations"
                 className="h-8 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
               />
             </div>

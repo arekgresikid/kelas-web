@@ -4,6 +4,7 @@ export interface FrontMatter {
   order: number;
   description?: string;
   type?: string;
+  isBonus?: boolean;
 }
 
 export interface SubMateri {

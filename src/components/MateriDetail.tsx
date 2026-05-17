@@ -11,6 +11,8 @@ import { useProgress } from '../context/ProgressContext';
 import CodePlayground from './CodePlayground';
 import Mermaid from './Mermaid';
 import QuizEngine from './QuizEngine';
+import CloudflareTutorialBonus from './CloudflareTutorialBonus';
+import FirstProjectBonus from './FirstProjectBonus';
 
 interface MateriDetailProps {
   materi: Materi;
@@ -31,9 +33,10 @@ const createHeadingId = (children: ReactNode) => getTextFromChildren(children)
 
 const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
   const [subProgress, setSubProgress] = useState<Record<string, boolean>>({});
-  const { toggleProgress } = useProgress();
+  const { toggleProgress, progress } = useProgress();
 
   const isFrontendModul = materi.frontmatter.modul === 4 || materi.frontmatter.modul === 5;
+  const isBonus = materi.frontmatter.isBonus === true;
 
   useEffect(() => {
     document.title = `${materi.frontmatter.title} - KelasWeb`;
@@ -101,141 +104,171 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
           <span className="text-black dark:text-white font-medium truncate">{materi.frontmatter.title}</span>
         </div>
 
-        <h1 className="text-3xl md:text-4xl font-extrabold text-black dark:text-white mb-4 tracking-tight break-words leading-tight scroll-mt-32">
-          {materi.frontmatter.title}
-        </h1>
-        
-        {materi.frontmatter.description && (
-          <p className="text-xl text-black/60 dark:text-white/60 mb-10 leading-relaxed border-l-4 border-black dark:border-white pl-6 py-2 bg-black/5 dark:bg-white/5 rounded-r-xl">
-            {materi.frontmatter.description}
-          </p>
-        )}
+        {isBonus ? (
+          materi.slug === 'bonus-proyek-pertama' ? (
+            <FirstProjectBonus />
+          ) : (
+            <CloudflareTutorialBonus />
+          )
+        ) : (
+          <>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-black dark:text-white mb-4 tracking-tight break-words leading-tight scroll-mt-32">
+              {materi.frontmatter.title}
+            </h1>
+            
+            {materi.frontmatter.description && (
+              <p className="text-xl text-black/60 dark:text-white/60 mb-10 leading-relaxed border-l-4 border-black dark:border-white pl-6 py-2 bg-black/5 dark:bg-white/5 rounded-r-xl">
+                {materi.frontmatter.description}
+              </p>
+            )}
 
-        <div className="prose dark:prose-invert">
-          <ReactMarkdown 
-            remarkPlugins={[remarkGfm]} 
-            rehypePlugins={[rehypeHighlight]}
-            components={{
-              h2({ children, ...props }) {
-                return (
-                  <h2 id={createHeadingId(children)} {...props}>
-                    {children}
-                  </h2>
-                );
-              },
-              code({ className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || '');
-                const isMermaid = match?.[1] === 'mermaid';
-                
-                if (isMermaid) {
-                  return <Mermaid chart={String(children).replace(/\n$/, '')} />;
-                }
-                
-                return (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              }
-            }}
-          >
-            {materi.content}
-          </ReactMarkdown>
-        </div>
-
-        {isFrontendModul && <CodePlayground />}
-
-        {materi.slug === '1.1-pengenalan-web-development' && (
-          <div className="mt-16">
-            <QuizEngine 
-              quizId="quiz-1.1"
-              title="Kuis: Fundamental Web"
-              questions={[
-                {
-                  id: "q1",
-                  question: "Apa fungsi utama dari HTML dalam pengembangan web?",
-                  options: [
-                    "Memberikan gaya dan warna pada halaman",
-                    "Membuat halaman menjadi interaktif",
-                    "Memberikan struktur dasar dan kerangka konten",
-                    "Menyimpan data di dalam database"
-                  ],
-                  correctAnswerIndex: 2,
-                  explanation: "HTML (HyperText Markup Language) berfungsi sebagai kerangka dasar atau tulang punggung dari sebuah halaman web."
-                },
-                {
-                  id: "q2",
-                  question: "Manakah dari berikut ini yang merupakan bahasa untuk Styling (CSS)?",
-                  options: [
-                    "Tailwind",
-                    "React",
-                    "Node.js",
-                    "PostgreSQL"
-                  ],
-                  correctAnswerIndex: 0,
-                  explanation: "Tailwind adalah salah satu framework CSS yang sangat populer untuk memberikan gaya pada HTML dengan pendekatan utility-first."
-                }
-              ]}
-              onComplete={(_, passed) => {
-                if (passed) {
-                  // Auto-check all Knowledge Checks if passed!
-                  const allProgress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
-                  const currentMateriProgress = { ...subProgress };
-                  materi.subMateri.forEach(s => currentMateriProgress[s.id] = true);
-                  
-                  allProgress[materi.slug] = currentMateriProgress;
-                  localStorage.setItem('sub_materi_progress', JSON.stringify(allProgress));
-                  setSubProgress(currentMateriProgress);
-                  toggleProgress(materi.slug, true);
-                  window.dispatchEvent(new Event('storage'));
-                }
-              }}
-            />
-          </div>
-        )}
-
-        {/* Knowledge Check Section */}
-        <div className="mt-20 p-8 rounded-3xl bg-black/5 dark:bg-white/5 border border-black dark:border-white space-y-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-black dark:bg-white rounded-lg">
-              <CheckCircle2 size={20} className="text-white dark:text-black" />
+            <div className="prose dark:prose-invert">
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm]} 
+                rehypePlugins={[rehypeHighlight]}
+                components={{
+                  h2({ children, ...props }) {
+                    return (
+                      <h2 id={createHeadingId(children)} {...props}>
+                        {children}
+                      </h2>
+                    );
+                  },
+                  code({ className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '');
+                    const isMermaid = match?.[1] === 'mermaid';
+                    
+                    if (isMermaid) {
+                      return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+                    }
+                    
+                    return (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  }
+                }}
+              >
+                {materi.content}
+              </ReactMarkdown>
             </div>
-            <h3 className="text-xl font-bold">Knowledge Check</h3>
-          </div>
-          <p className="text-black/60 dark:text-white/60 text-sm italic">
-            "Jangan hanya membaca. Cobalah untuk mempraktekkan apa yang baru saja Anda pelajari di terminal atau editor Anda sendiri."
-          </p>
-          <ul className="space-y-4">
-             {materi.subMateri.map((sub) => (
-               <li key={sub.id} className="flex items-start gap-3 group">
-                 <button 
-                   onClick={() => toggleSubRead(sub.id)}
-                   className={`mt-1 flex-shrink-0 w-6 h-6 rounded-lg border flex items-center justify-center transition-all ${
-                     subProgress[sub.id] ? 'bg-green-500 border-green-500 text-white' : 'border-black/20 dark:border-white/20 group-hover:border-black'
-                   }`}
-                 >
-                   {subProgress[sub.id] ? <CheckCircle2 size={14} /> : <div className="w-1.5 h-1.5 rounded-full bg-black/20 dark:bg-white/20" />}
-                 </button>
-                 <div>
-                   <p className={`font-bold ${subProgress[sub.id] ? 'opacity-40 line-through' : ''}`}>{sub.title}</p>
-                   <p className="text-xs opacity-50">Klik kotak untuk menandai bagian ini sudah dipahami.</p>
-                 </div>
-               </li>
-             ))}
-          </ul>
-        </div>
+
+            {isFrontendModul && <CodePlayground />}
+
+            {materi.slug === '1.1-pengenalan-web-development' && (
+              <div className="mt-16">
+                <QuizEngine 
+                  quizId="quiz-1.1"
+                  title="Kuis: Fundamental Web"
+                  questions={[
+                    {
+                      id: "q1",
+                      question: "Apa fungsi utama dari HTML dalam pengembangan web?",
+                      options: [
+                        "Memberikan gaya dan warna pada halaman",
+                        "Membuat halaman menjadi interaktif",
+                        "Memberikan struktur dasar dan kerangka konten",
+                        "Menyimpan data di dalam database"
+                      ],
+                      correctAnswerIndex: 2,
+                      explanation: "HTML (HyperText Markup Language) berfungsi sebagai kerangka dasar atau tulang punggung dari sebuah halaman web."
+                    },
+                    {
+                      id: "q2",
+                      question: "Manakah dari berikut ini yang merupakan bahasa untuk Styling (CSS)?",
+                      options: [
+                        "Tailwind",
+                        "React",
+                        "Node.js",
+                        "PostgreSQL"
+                      ],
+                      correctAnswerIndex: 0,
+                      explanation: "Tailwind adalah salah satu framework CSS yang sangat populer untuk memberikan gaya pada HTML dengan pendekatan utility-first."
+                    }
+                  ]}
+                  onComplete={(_, passed) => {
+                    if (passed) {
+                      // Auto-check all Knowledge Checks if passed!
+                      const allProgress = JSON.parse(localStorage.getItem('sub_materi_progress') || '{}');
+                      const currentMateriProgress = { ...subProgress };
+                      materi.subMateri.forEach(s => currentMateriProgress[s.id] = true);
+                      
+                      allProgress[materi.slug] = currentMateriProgress;
+                      localStorage.setItem('sub_materi_progress', JSON.stringify(allProgress));
+                      setSubProgress(currentMateriProgress);
+                      toggleProgress(materi.slug, true);
+                      window.dispatchEvent(new Event('storage'));
+                    }
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Knowledge Check Section */}
+            <div className="mt-20 p-8 rounded-3xl bg-black/5 dark:bg-white/5 border border-black dark:border-white space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-black dark:bg-white rounded-lg">
+                  <CheckCircle2 size={20} className="text-white dark:text-black" />
+                </div>
+                <h3 className="text-xl font-bold">Knowledge Check</h3>
+              </div>
+              <p className="text-black/60 dark:text-white/60 text-sm italic">
+                "Jangan hanya membaca. Cobalah untuk mempraktekkan apa yang baru saja Anda pelajari di terminal atau editor Anda sendiri."
+              </p>
+              <ul className="space-y-4">
+                 {materi.subMateri.map((sub) => (
+                   <li key={sub.id} className="flex items-start gap-3 group">
+                     <button 
+                       onClick={() => toggleSubRead(sub.id)}
+                       className={`mt-1 flex-shrink-0 w-6 h-6 rounded-lg border flex items-center justify-center transition-all ${
+                         subProgress[sub.id] ? 'bg-green-500 border-green-500 text-white' : 'border-black/20 dark:border-white/20 group-hover:border-black'
+                       }`}
+                     >
+                       {subProgress[sub.id] ? <CheckCircle2 size={14} /> : <div className="w-1.5 h-1.5 rounded-full bg-black/20 dark:bg-white/20" />}
+                     </button>
+                     <div>
+                       <p className={`font-bold ${subProgress[sub.id] ? 'opacity-40 line-through' : ''}`}>{sub.title}</p>
+                       <p className="text-xs opacity-50">Klik kotak untuk menandai bagian ini sudah dipahami.</p>
+                     </div>
+                   </li>
+                 ))}
+              </ul>
+            </div>
+          </>
+        )}
 
         <div className="mt-16 pt-8 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-             {isAllRead ? (
-               <div className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black font-bold">
-                 <CheckCircle2 size={20} />
-                 Materi Selesai!
-               </div>
+             {isBonus ? (
+               progress[materi.slug] === true ? (
+                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-green-500 bg-green-500/10 text-green-600 dark:text-green-400 font-bold text-xs sm:text-sm">
+                   <CheckCircle2 size={16} />
+                   Bonus Selesai Diambil!
+                 </div>
+               ) : (
+                 <button
+                   onClick={async () => {
+                     await toggleProgress(materi.slug, true);
+                     window.dispatchEvent(new Event('storage'));
+                   }}
+                   className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-amber-500 hover:bg-amber-500 hover:text-white transition-all text-amber-600 dark:text-amber-400 font-bold text-xs sm:text-sm cursor-pointer"
+                 >
+                   <CheckCircle2 size={16} />
+                   Klaim & Selesaikan Bonus ini
+                 </button>
+               )
              ) : (
-               <div className="text-sm text-black/50 dark:text-white/50 italic">
-                 Selesaikan semua sub-materi untuk menandai materi ini selesai.
-               </div>
+               isAllRead ? (
+                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black font-bold">
+                   <CheckCircle2 size={20} />
+                   Materi Selesai!
+                 </div>
+               ) : (
+                 <div className="text-sm text-black/50 dark:text-white/50 italic">
+                   Selesaikan semua sub-materi untuk menandai materi ini selesai.
+                 </div>
+               )
              )}
           </div>
 
@@ -259,44 +292,46 @@ const MateriDetail = ({ materi, onNext, onPrev }: MateriDetailProps) => {
       </div>
 
       {/* Table of Contents (Sidebar Kanan) */}
-      <aside className="w-full lg:w-72 flex-shrink-0">
-        <div className="sticky top-24 bg-black/5 dark:bg-white/5 p-6 rounded-2xl border border-black dark:border-white">
-          <div className="flex items-center gap-2 font-bold text-black dark:text-white mb-6 border-b border-black dark:border-white pb-4">
-            <List size={20} className="text-black dark:text-white" />
-            Daftar Isi & Progress
+      {!isBonus && materi.subMateri.length > 0 && (
+        <aside className="w-full lg:w-72 flex-shrink-0">
+          <div className="sticky top-24 bg-black/5 dark:bg-white/5 p-6 rounded-2xl border border-black dark:border-white">
+            <div className="flex items-center gap-2 font-bold text-black dark:text-white mb-6 border-b border-black dark:border-white pb-4">
+              <List size={20} className="text-black dark:text-white" />
+              Daftar Isi & Progress
+            </div>
+            <nav className="space-y-3">
+              {materi.subMateri.map((sub) => (
+                <div key={sub.id} className="group flex items-start gap-3">
+                  <button
+                    onClick={() => toggleSubRead(sub.id)}
+                    className={`mt-1 flex-shrink-0 w-5 h-5 rounded border transition-all flex items-center justify-center ${
+                      subProgress[sub.id] 
+                        ? 'bg-black dark:bg-white border-black dark:border-white text-white dark:text-black' 
+                        : 'bg-transparent border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white'
+                    }`}
+                  >
+                    {subProgress[sub.id] && <CheckCircle2 size={12} />}
+                  </button>
+                  <a
+                    href={`#${sub.id}`}
+                    className={`text-sm leading-tight transition-colors ${
+                      subProgress[sub.id] 
+                        ? 'text-black/30 dark:text-white/30 line-through decoration-black/10 dark:decoration-white/10' 
+                        : 'text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white'
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById(sub.id)?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    {sub.title}
+                  </a>
+                </div>
+              ))}
+            </nav>
           </div>
-          <nav className="space-y-3">
-            {materi.subMateri.map((sub) => (
-              <div key={sub.id} className="group flex items-start gap-3">
-                <button
-                  onClick={() => toggleSubRead(sub.id)}
-                  className={`mt-1 flex-shrink-0 w-5 h-5 rounded border transition-all flex items-center justify-center ${
-                    subProgress[sub.id] 
-                      ? 'bg-black dark:bg-white border-black dark:border-white text-white dark:text-black' 
-                      : 'bg-transparent border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white'
-                  }`}
-                >
-                  {subProgress[sub.id] && <CheckCircle2 size={12} />}
-                </button>
-                <a
-                  href={`#${sub.id}`}
-                  className={`text-sm leading-tight transition-colors ${
-                    subProgress[sub.id] 
-                      ? 'text-black/30 dark:text-white/30 line-through decoration-black/10 dark:decoration-white/10' 
-                      : 'text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white'
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById(sub.id)?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  {sub.title}
-                </a>
-              </div>
-            ))}
-          </nav>
-        </div>
-      </aside>
+        </aside>
+      )}
     </div>
   );
 };
