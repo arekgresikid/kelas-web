@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BookOpen, Lock, Zap, Globe, Layout, 
   ShoppingCart, Activity, Share2, Search as SearchIcon, 
-  CheckCircle2, Star, ArrowRight
+  CheckCircle2, Star, ArrowRight, Copy
 } from 'lucide-react';
 
 interface LandingProps {
@@ -168,10 +168,46 @@ Metode: ${regMethod}
                     >
                       <option value="" disabled>Pilih Metode Pembayaran</option>
                       <option value="QRIS">Scan QRIS</option>
-                      <option value="BCA">Transfer Bank BCA</option>
-                      <option value="Mandiri">Transfer Bank Mandiri</option>
-                      <option value="E-Wallet">E-Wallet (Gopay / OVO / Dana)</option>
+                      <option value="BRI">Transfer Bank BRI</option>
+                      <option value="Jago">Transfer Bank Jago</option>
+                      <option value="E-Wallet">E-Wallet (Gopay / Dana)</option>
                     </select>
+
+                    <AnimatePresence mode="popLayout">
+                      {regMethod === 'BRI' && (
+                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="flex items-center justify-between bg-white dark:bg-black/20 p-4 rounded-xl border border-black/5 dark:border-white/5">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] font-black opacity-50 uppercase tracking-widest text-blue-600 dark:text-blue-400">Bank BRI</span>
+                            <span className="text-sm font-bold font-mono">002601080458504</span>
+                          </div>
+                          <button onClick={() => { navigator.clipboard.writeText('002601080458504'); alert('Nomor BRI berhasil disalin!'); }} className="p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-all" title="Copy Number">
+                            <Copy size={18} />
+                          </button>
+                        </motion.div>
+                      )}
+                      {regMethod === 'Jago' && (
+                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="flex items-center justify-between bg-white dark:bg-black/20 p-4 rounded-xl border border-black/5 dark:border-white/5">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] font-black opacity-50 uppercase tracking-widest text-orange-500">Bank Jago</span>
+                            <span className="text-sm font-bold font-mono">4889506026373948</span>
+                          </div>
+                          <button onClick={() => { navigator.clipboard.writeText('4889506026373948'); alert('Nomor Bank Jago berhasil disalin!'); }} className="p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-all" title="Copy Number">
+                            <Copy size={18} />
+                          </button>
+                        </motion.div>
+                      )}
+                      {regMethod === 'E-Wallet' && (
+                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="flex items-center justify-between bg-white dark:bg-black/20 p-4 rounded-xl border border-black/5 dark:border-white/5">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] font-black opacity-50 uppercase tracking-widest text-emerald-500">Gopay / Dana</span>
+                            <span className="text-sm font-bold font-mono">081330763633</span>
+                          </div>
+                          <button onClick={() => { navigator.clipboard.writeText('081330763633'); alert('Nomor E-Wallet berhasil disalin!'); }} className="p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-all" title="Copy Number">
+                            <Copy size={18} />
+                          </button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               )}
