@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen, Lock, Zap, Globe, Layout,
   ShoppingCart, Activity, Share2, Search as SearchIcon,
-  CheckCircle2, Star, ArrowRight, Copy, MessageCircle, HelpCircle, User
+  CheckCircle2, Star, ArrowRight, Copy, MessageCircle, HelpCircle, User,
+  Cookie
 } from 'lucide-react';
 
 // Mini glowing vector sparkline graph component
@@ -166,6 +167,7 @@ Metode: ${regMethod}
     { icon: <Share2 size={16} />, title: "Web Affiliate", desc: "Sistem rujukan otomatis seperti bikinsendiri.my.id", link: "https://bikinsendiri.my.id/" },
     { icon: <SearchIcon size={16} />, title: "Tools SEO Mandiri", desc: "Optimasi search engine sendiri seperti seo.ariftirtana.my.id", link: "https://seo.ariftirtana.my.id" },
     { icon: <Star size={16} />, title: "Web Unik & Kreatif", desc: "Eksplorasi desain kustom unik seperti jawidigital.my.id", link: "https://jawidigital.my.id" },
+    { icon: <Cookie size={16} />, title: "Katalog Roti & Pastry Modern", desc: "Katalog digital toko kue, jajanan pasar, dan pastry modern seperti gracia.bakery.my.id", link: "https://gracia.bakery.my.id" },
   ];
 
   const testimonials = [
@@ -412,7 +414,7 @@ Metode: ${regMethod}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {showcases.map((s, idx) => {
-              const isFeatured = idx === 0 || idx === 5; // Portfolio and SEO tools are featured
+              const isFeatured = idx === 0; // Portfolio is featured to make a perfectly balanced 3x3 grid layout (8 items: 1 featured of 2-cols and 7 standard of 1-col)
               return (
                 <button
                   key={idx}
